@@ -23,14 +23,16 @@ import module org.openxtalk.widget.svgshape
   handler getFillGradient() returns optional any
   handler getGradientStops() returns String
   handler setGradientStops(in pColor as String) returns nothing
-  handler setBackgroundPattern(in pPatternImageID as optional any) returns nothing
+  handler getBackgroundColor() returns String
+  handler setBackgroundColor(in pColor as String) returns nothing
+  handler setBackgroundPattern(in pPatternImageID as Number) returns nothing
   handler setBorderColor(in pColor as String) returns nothing
   handler getBorderColor() returns String
-  handler setBorderPattern(in pPatternImageID as optional any) returns nothing
+  handler setBorderPattern(in pPattern as optional any) returns nothing
   handler setHiliteColor(in pColor as String) returns nothing
   handler getHiliteColor() returns String
-  handler setHilitePattern(in pPatternImageID as optional any) returns nothing
-  handler setBorderWidth(in pBorderWidth as Number) returns nothing
+  handler setHilitePattern(in pPattern as optional any) returns nothing
+  handler setBorderWidth(in pPatternImageID as Number) returns nothing
   handler setIsHilited(in pBoolean as Boolean) returns optional any
   handler setMaintainAspectRatio(in pBoolean as Boolean) returns optional any
   handler OnCreate() returns optional any
@@ -43,8 +45,9 @@ import module org.openxtalk.widget.svgshape
   handler OnMouseLeave() returns optional any
   handler setFlipVertically(in pBoolean as Boolean) returns optional any
   handler setPath(in pColor as String) returns nothing
+  handler setPoints(in pColor as String) returns nothing
   handler setPathPreset(in pColor as String) returns nothing
-  handler setAngle(in pBorderWidth as Number) returns nothing
+  handler setAngle(in pPatternImageID as Number) returns nothing
   handler setFillRule(in pColor as String) returns nothing
   handler OnPaint() returns optional any
 end module

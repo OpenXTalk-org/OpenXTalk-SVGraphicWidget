@@ -29,6 +29,7 @@
   <metadata key="foregroundColor.default"></metadata>
   <metadata key="foregroundColor.section">Colors</metadata>
   <metadata key="foregroundColor.label">Fill color</metadata>
+  <metadata key="foregroundColor.group">Foreground fill</metadata>
   <handler name="getForegroundColor" parameters="" return="string"/>
   <handler name="setForegroundColor" parameters="in string" return="nothing"/>
   <property name="foregroundPattern" get="string" set="optional number"/>
@@ -36,27 +37,34 @@
   <metadata key="foregroundPattern.default"></metadata>
   <metadata key="foregroundPattern.section">Colors</metadata>
   <metadata key="foregroundPattern.label">Fill Pattern</metadata>
+  <metadata key="foregroundPattern.group">Foreground fill</metadata>
   <handler name="setForegroundPattern" parameters="in optional number" return="nothing"/>
   <property name="fillGradient" get="optional any" set="optional string"/>
   <metadata key="fillGradient.editor">com.livecode.pi.gradientramp</metadata>
-  <metadata key="fillGradient.default">0,127,0,127
-1,0,0,0
-0,0,0,0</metadata>
+  <metadata key="fillGradient.default">0,0,0,0
+1,0,0,0</metadata>
   <metadata key="fillGradient.section">Colors</metadata>
+  <metadata key="fillGradient.group">Foreground fill</metadata>
   <handler name="setFillGradient" parameters="in optional string" return="nothing"/>
   <handler name="getFillGradient" parameters="" return="optional any"/>
   <property name="gradientStops" get="string" set="string"/>
   <handler name="getGradientStops" parameters="" return="string"/>
   <handler name="setGradientStops" parameters="in string" return="nothing"/>
-  <property name="backgroundColor" get="Color"/>
+  <property name="backgroundColor" get="string" set="string"/>
   <metadata key="backgroundColor.editor">com.livecode.pi.color</metadata>
   <metadata key="backgroundColor.default"></metadata>
   <metadata key="backgroundColor.section">Colors</metadata>
-  <property name="backgroundPattern" get="optional any" set="optional any"/>
+  <metadata key="backgroundColor.label">Background color</metadata>
+  <metadata key="backgroundColor.group">Background fill</metadata>
+  <handler name="getBackgroundColor" parameters="" return="string"/>
+  <handler name="setBackgroundColor" parameters="in string" return="nothing"/>
+  <property name="backgroundPattern" get="optional number" set="number"/>
   <metadata key="backgroundPattern.editor">com.livecode.pi.pattern</metadata>
   <metadata key="backgroundPattern.default"></metadata>
   <metadata key="backgroundPattern.section">Colors</metadata>
-  <handler name="setBackgroundPattern" parameters="in optional any" return="nothing"/>
+  <metadata key="backgroundPattern.group">Background fill</metadata>
+  <metadata key="backgroundPattern.label">Background pattern</metadata>
+  <handler name="setBackgroundPattern" parameters="in number" return="nothing"/>
   <property name="borderColor" get="string" set="string"/>
   <metadata key="borderColor.editor">com.livecode.pi.color</metadata>
   <metadata key="borderColor.default"></metadata>
@@ -67,6 +75,8 @@
   <metadata key="borderPattern.editor">com.livecode.pi.pattern</metadata>
   <metadata key="borderPattern.default"></metadata>
   <metadata key="borderPattern.section">Colors</metadata>
+  <metadata key="borderPattern.group">Border fill</metadata>
+  <metadata key="borderPattern.label">Stroke Pattern</metadata>
   <handler name="setBorderPattern" parameters="in optional any" return="nothing"/>
   <property name="hiliteColor" get="Color" set="string"/>
   <metadata key="hiliteColor.editor">com.livecode.pi.color</metadata>
@@ -83,7 +93,7 @@
   <metadata key="labelTextColor.label">Text Color</metadata>
   <metadata key="labelTextColor.section">Colors</metadata>
   <metadata key="labelTextColor.editor">com.livecode.pi.color</metadata>
-  <metadata key="labelTextColor.default">127,0,255</metadata>
+  <metadata key="labelTextColor.default"></metadata>
   <metadata key="labelTextColor.user_visible">true</metadata>
   <property name="label" get="string" set="string"/>
   <metadata key="label.label">Label Text</metadata>
@@ -141,6 +151,11 @@
   <metadata key="flipped.label">Flip</metadata>
   <handler name="setFlipVertically" parameters="in boolean" return="any"/>
   <handler name="setPath" parameters="in string" return="nothing"/>
+  <property name="points" get="string" set="string"/>
+  <metadata key="points.editor">com.livecode.pi.text</metadata>
+  <metadata key="points.default"></metadata>
+  <metadata key="points.label">Points</metadata>
+  <handler name="setPoints" parameters="in string" return="nothing"/>
   <handler name="setPathPreset" parameters="in string" return="nothing"/>
   <handler name="setAngle" parameters="in number" return="nothing"/>
   <handler name="setFillRule" parameters="in string" return="nothing"/>
