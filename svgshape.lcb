@@ -136,7 +136,7 @@ Description:
 Use the <foregroundColor> property to set the color of the SVG path, when the icon
 isn't highlighted.
 */
-private variable mForegroundColor as Color
+private variable mForegroundColor as optional Color
 property "foregroundColor" get getForegroundColor set setForegroundColor
 metadata foregroundColor.editor is "com.livecode.pi.color"
 metadata foregroundColor.default is ""
@@ -178,7 +178,7 @@ public handler setForegroundPattern(in pPattern as optional Number ) returns not
    redraw all
 end handler
 
----------------- ATTEMPT TO ADD GRADIENTS ------------------------------------
+---------------- ADD GRADIENTS ------------------------------------
 
 private variable mGradientRectangle as Rectangle
 private variable mGradientHandleSize as Integer
@@ -188,7 +188,7 @@ private variable mGradientRamp as List
 private variable mFillGradient as optional String
 property "fillGradient" get getFillGradient set setFillGradient
 metadata fillGradient.editor is "com.livecode.pi.gradientramp"
-metadata fillGradient.default is "0,0,0,0\n1,0,0,0\"
+metadata fillGradient.default is "0,0,0,0\n1,0,0,0"
 metadata fillGradient.section is "Colors"
 metadata fillGradient.group is "Foreground fill"
 
@@ -211,7 +211,7 @@ public handler setFillGradient(in pGradientStops as optional String ) returns no
          push gradient stop at (tStopItems[1] parsed as number) with color [(tStopItems[2] parsed as number / 255), (tStopItems[3] parsed as number / 255), (tStopItems[4] parsed as number / 255),1] onto mGradientRamp
       end if
    end repeat
-   log [ the elements of mGradientRamp ]
+   log [ mGradientRamp ]
    -- reorderGradientRamp()
    OnGeometryChanged()
    redraw all
@@ -260,6 +260,8 @@ public handler getFillGradient() returns optional any
 end handler
 
 property gradientStops get getGradientStops set setGradientStops
+metadata gradientStops.section is "Colors"
+metadata gradientStops.group is "Foreground fill"
 public handler getGradientStops() returns String
    variable tStops as String
    put the empty string into tStops
@@ -321,7 +323,7 @@ Description:
 Use the <backgroundColor> property to set the color of the background that the shape
 is drawn on top of.
 */
-private variable mBackgroundColor as Color
+private variable mBackgroundColor as optional Color
 property "backgroundColor" get getBackgroundColor set setBackgroundColor
 metadata backgroundColor.editor is "com.livecode.pi.color"
 metadata backgroundColor.default is ""
@@ -331,11 +333,11 @@ metadata backgroundColor.group is "Background fill"
 -- metadata backgroundColor.order is "3"
 -- metadata foregroundColor.order is "1"
 public handler getBackgroundColor() returns String
-   return colorToString( mForegroundColor, true)
+   return colorToString( mBackgroundColor, true)
 end handler
 public handler setBackgroundColor(in pColor as String) returns nothing
    -- log pColor
-   put stringToColor(pColor) into mForegroundColor
+   put stringToColor(pColor) into mBackgroundColor
    OnGeometryChanged()
    redraw all
 end handler
@@ -502,6 +504,7 @@ end handler
 private variable mLabelText as String
 property "label" get getLabelText set setLabelText
 metadata label.label is "Label Text"
+metadata label.default is ""
 private handler getLabelText() returns String
 	return mLabelText
 end handler
@@ -750,15 +753,20 @@ metadata fillRule.default is "non-zero"
 metadata fillRule.label is "Fill rule"
 -- called when widget is created
 public handler OnCreate()
+   put true into mOpaque
+   put "" into mLabelText
 	put 0 into mAngle
-	put 0.5 into mBorderWidth
+	put 1 into mBorderWidth
 	put the color of my border paint into mBorderColor
-   -- put the color of my top paint into mLabelTextColor
    put the color of my border paint into mLabelTextColor
 	put the color of my background paint into mBackgroundColor
-	put the color of my foreground paint into mForegroundColor
+   put the color of my foreground paint into mForegroundColor
+   put the color of my top paint into mLabelTextColor
+   put the color of my highlight paint into mHiliteColor
 
+   setFillGradient("0,0,0,0\n1,0,0,0")
 	put false into mHilited
+
 	put true into mMaintainAspectRatio
 	put false into mFlipVertically
 	put "non-zero" into mFillRule
@@ -777,11 +785,19 @@ public handler OnSave(out rProperties as Array)
 	put mFillRule into rProperties["fillRule"]
    put mBorderWidth into rProperties["borderWidth"]
    put mOpaque into rProperties["opaque"]
-
+   put mLabelText into rProperties["label"]
+   -- put mToolTip into rProperties["tooltip"]
 	put colorToString(mForegroundColor,false) into rProperties["foreroundColor"]
-	put colorToString(mBackgroundColor,true) into rProperties["backgroundColor"]
+   put mForegroundPattern into rProperties["foreroundPattern"]
+	put colorToString(mBackgroundColor,false) into rProperties["backgroundColor"]
+   put mBackgroundPattern into rProperties["backgroundPattern"]
 	put colorToString(mBorderColor,false) into rProperties["borderColor"]
+   put mBorderPattern into rProperties["borderPattern"]
 	put colorToString(mHiliteColor,false) into rProperties["hiliteColor"]
+   put mHilitePattern into rProperties["hilitePattern"]
+   put colorToString(mLabelTextColor,false) into rProperties["labelTextColor"]
+   put mFillGradient into rProperties["fillGradient"]
+
 end handler
 ----------
 -- this handler is called when the widget is loaded
@@ -794,12 +810,9 @@ public handler OnLoad(in pProperties as Array)
 	put pProperties["angle"] into mAngle
    put pProperties["borderWidth"]into mBorderWidth
    put pProperties["opaque"] into mOpaque
-   put pProperties["label"] into mLabelText
-
-   -- set property "tooltip" of my script object to "SVG Shape"
-   set property "label" of my script object to mLabelText
    -- put property "opaque" of my script object into mOpaque
-
+   put pProperties["label"] into mLabelText
+   -- set property "tooltip" of my script object to "SVG Shape"
 	if "iconPresetName" is among the keys of pProperties then
 		put pProperties["iconPresetName"] into mIconPresetName
 	end if
@@ -808,9 +821,15 @@ public handler OnLoad(in pProperties as Array)
 		put pProperties["fillRule"] into mFillRule
 	end if
 	put stringToColor(pProperties["foreroundColor"]) into mForegroundColor
+   put pProperties["foreroundPattern"] into mForegroundPattern
 	put stringToColor(pProperties["backgroundColor"]) into mBackgroundColor
+   put pProperties["backgroundPattern"] into mBackgroundPattern
 	put stringToColor(pProperties["borderColor"]) into mBorderColor
+   put pProperties["borderPattern"] into mForegroundPattern
 	put stringToColor(pProperties["hiliteColor"]) into mHiliteColor
+   put pProperties["hilitePattern"] into mHilitePattern
+   put stringToColor(pProperties["labelTextColor"]) into mLabelTextColor
+   put pProperties["fillGradient"] into mFillGradient
 	CalculateScaledSizes()
 end handler
 ----------
@@ -992,6 +1011,15 @@ public handler OnPaint()
 	set the paint of this canvas to my border paint
 	stroke tPath on this canvas
    if mLabelText is not nothing then
+      set the font of this canvas to my font
+      if mLabelTextColor is not empty then
+         set the paint of this canvas to solid paint with mLabelTextColor
+         -- if mTextAlign is "center" then
+         fill text mLabelText at center of my bounds on this canvas
+      else
+         set the paint of this canvas to my top paint -- my border paint? my topColor paint? What are the others?
+         fill text mLabelText at center of my bounds on this canvas
+      end if
       -- if mGradientRamp is not nothing then
       if mGradientRamp is not empty then
             put linear gradient with ramp mGradientRamp into tGradient
@@ -1000,22 +1028,14 @@ public handler OnPaint()
             set the to of tGradient to point [the right of my bounds / 2, the bottom of my bounds /2]
             -- set the via of tGradient to point [the left of my bounds / 2, the bottom of my bounds]
             set the paint of this canvas to tGradient
-      else if mLabelTextColor is not nothing then
-         set the paint of this canvas to solid paint with mLabelTextColor
-      else
-         set the paint of this canvas to my top paint -- my border paint? my topColor paint? What are the others?
+            fill text mLabelText at center of my bounds on this canvas
       end if
-		set the font of this canvas to my font
-		-- if mTextAlign is "center" then
-		fill text mLabelText at center of my bounds on this canvas
-         -- stroke text mLabelText at center of my bounds on this canvas --- wish this syntax worked, it does not
-		--else
+      -- stroke text mLabelText at center of my bounds on this canvas --- wish this syntax worked, it does not
 		--   fill text mLabel at point [ the width of tLabelRect /2 , my height / 2 + 4 ] on this canvas
 		-- 	fill text mLabel at point [ my width / 2 , my height / 2 ] on this canvas
 		--     end if
 		-- put 0 into  mLabelLocHorizontalOffset
 		-- put 0 into  mLabelLocHVerticalOffset
-
 	end if
 end handler
 
@@ -1024,7 +1044,6 @@ private handler CalculateScaledSizes()
 	//recalculate the bounding box for the path
 	variable tPath as Path
 	variable tNewPathRect as Rectangle
-
 	put path mPath into tPath
 	if mMaintainAspectRatio then
 		put rectangle [ 0 + mBorderWidth, 0 + mBorderWidth, the width of my bounds - mBorderWidth , the width of my bounds - mBorderWidth ] into tNewPathRect
