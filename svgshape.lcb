@@ -139,13 +139,13 @@ isn't highlighted.
 private variable mForegroundColor as optional Color
 property "foregroundColor" get getForegroundColor set setForegroundColor
 metadata foregroundColor.editor is "com.livecode.pi.color"
-metadata foregroundColor.default is ""
+metadata foregroundColor.default is "127,127,127"
 metadata foregroundColor.section is "Colors"
 metadata foregroundColor.label is "Fill color"
 metadata foregroundColor.group is "Foreground fill"
 -- metadata foregroundColor.order is "1"
 public handler getForegroundColor() returns String
-   return colorToString( mForegroundColor, true)
+   return colorToString( mForegroundColor, false)
 end handler
 public handler setForegroundColor(in pColor as String) returns nothing
    -- log pColor
@@ -363,7 +363,7 @@ metadata backgroundPattern.section is "Colors"
 metadata backgroundPattern.group is "Background fill"
 metadata backgroundPattern.label is "Background pattern"
 -- metadata backgroundPattern.order is "4"
-public handler setBackgroundPattern(in pPatternImageID as Number) returns nothing
+public handler setBackgroundPattern(in pPatternImageID as optional Number) returns nothing
    put pPatternImageID into mBackgroundPattern
    OnGeometryChanged()
    redraw all
@@ -412,7 +412,7 @@ Description:
 Use the <borderPattern> property to set the image pattern of the outline
 of the SVG shape.
 */
-private variable mBorderPattern --  as optional Paint
+private variable mBorderPattern as optional Number
 property "borderPattern" get mBorderPattern set setBorderPattern
 metadata borderPattern.editor is "com.livecode.pi.pattern"
 metadata borderPattern.default is ""
@@ -421,7 +421,7 @@ metadata borderPattern.group is "Border fill"
 metadata borderPattern.label is "Stroke Pattern"
 --metadata borderPattern.order is "6"
 
-public handler setBorderPattern(in pPattern as optional any) returns nothing
+public handler setBorderPattern(in pPattern as optional Number) returns nothing
    put pPattern into mBorderPattern
 	log mBorderPattern
    OnGeometryChanged()
@@ -470,7 +470,7 @@ Use the <hilitePattern> property to set the image pattern of the outline
 of the SVG shape.
 */
 
-private variable mHilitePattern as optional Image
+private variable mHilitePattern as optional Number
 property "hilitePattern"	get mHilitePattern	set setHilitePattern
 metadata hilitePattern.editor is "com.livecode.pi.pattern"
 metadata hilitePattern.default is ""
@@ -480,13 +480,13 @@ metadata hilitePattern.group is "hiliteProps"
 metadata hilitePattern.order is "8"
 metadata hilitePattern.label is "Stroke Pattern"
 */
-public handler setHilitePattern(in pHilitePattern as optional any) returns nothing
+public handler setHilitePattern(in pHilitePattern as optional Number) returns nothing
    put pHilitePattern into mHilitePattern
    OnGeometryChanged()
    redraw all
 end handler
 
-private variable mLabelTextColor as optional Color
+private variable mLabelTextColor as Color
 property "labelTextColor"          get getLabelTextColor        set setLabelTextColor
 metadata labelTextColor.label is "Text Color"
 metadata labelTextColor.section is "Colors"
@@ -582,6 +582,7 @@ You can get a list of available predefined path names by running
 */
 property "iconName" get mIconPresetName
 metadata iconName.label is "Icon Name"
+
 
 /**
 Syntax:
@@ -757,18 +758,28 @@ public handler OnCreate()
    put "" into mLabelText
 	put 0 into mAngle
 	put 1 into mBorderWidth
+
+   put false into mHilited
+   put true into mMaintainAspectRatio
+   put false into mFlipVertically
+   put nothing into mForegroundColor
+   put nothing into mBackgroundColor
+   put the color of my top paint into mLabelTextColor
+   put the color of my highlight paint into mHiliteColor
 	put the color of my border paint into mBorderColor
    put the color of my border paint into mLabelTextColor
 	put the color of my background paint into mBackgroundColor
-   put the color of my foreground paint into mForegroundColor
-   put the color of my top paint into mLabelTextColor
-   put the color of my highlight paint into mHiliteColor
+   variable tPaint
+   put my foreground paint into tPaint
+   log [tPaint]
+   -- put the color of my foreground paint into mForegroundColor
+   -- log [mForegroundColor]
+
+   --else
+   --   log [mForegroundPattern]
+   --end if
 
    setFillGradient("0,0,0,0\n1,0,0,0")
-	put false into mHilited
-
-	put true into mMaintainAspectRatio
-	put false into mFlipVertically
 	put "non-zero" into mFillRule
 	setPathPreset("Puzzle Piece")
 end handler
@@ -787,14 +798,18 @@ public handler OnSave(out rProperties as Array)
    put mOpaque into rProperties["opaque"]
    put mLabelText into rProperties["label"]
    -- put mToolTip into rProperties["tooltip"]
-	put colorToString(mForegroundColor,false) into rProperties["foreroundColor"]
-   put mForegroundPattern into rProperties["foreroundPattern"]
+   if mForegroundColor is not nothing then
+	     put colorToString(mForegroundColor,false) into rProperties["foregroundColor"]
+  end if
+   put mForegroundPattern into rProperties["foregroundPattern"]
 	put colorToString(mBackgroundColor,false) into rProperties["backgroundColor"]
    put mBackgroundPattern into rProperties["backgroundPattern"]
 	put colorToString(mBorderColor,false) into rProperties["borderColor"]
    put mBorderPattern into rProperties["borderPattern"]
 	put colorToString(mHiliteColor,false) into rProperties["hiliteColor"]
-   put mHilitePattern into rProperties["hilitePattern"]
+   if mHilitePattern is not nothing then
+      put mHilitePattern into rProperties["hilitePattern"]
+   end if
    put colorToString(mLabelTextColor,false) into rProperties["labelTextColor"]
    put mFillGradient into rProperties["fillGradient"]
 
@@ -813,21 +828,23 @@ public handler OnLoad(in pProperties as Array)
    -- put property "opaque" of my script object into mOpaque
    put pProperties["label"] into mLabelText
    -- set property "tooltip" of my script object to "SVG Shape"
-	if "iconPresetName" is among the keys of pProperties then
+	-- if "iconPresetName" is among the keys of pProperties then
 		put pProperties["iconPresetName"] into mIconPresetName
-	end if
+	--end if
 	-- Older SVG widgets do not have this property
 	if "fillRule" is among the keys of pProperties then
 		put pProperties["fillRule"] into mFillRule
 	end if
-	put stringToColor(pProperties["foreroundColor"]) into mForegroundColor
-   put pProperties["foreroundPattern"] into mForegroundPattern
+	put stringToColor(pProperties["foregroundColor"]) into mForegroundColor
+   put pProperties["foregroundPattern"] into mForegroundPattern
 	put stringToColor(pProperties["backgroundColor"]) into mBackgroundColor
    put pProperties["backgroundPattern"] into mBackgroundPattern
 	put stringToColor(pProperties["borderColor"]) into mBorderColor
-   put pProperties["borderPattern"] into mForegroundPattern
+   put pProperties["borderPattern"] into mBorderPattern
 	put stringToColor(pProperties["hiliteColor"]) into mHiliteColor
-   put pProperties["hilitePattern"] into mHilitePattern
+   if "hilitePattern" is among the keys of pProperties then
+      put pProperties["hilitePattern"] into mHilitePattern
+   end if
    put stringToColor(pProperties["labelTextColor"]) into mLabelTextColor
    put pProperties["fillGradient"] into mFillGradient
 	CalculateScaledSizes()
