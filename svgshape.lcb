@@ -825,23 +825,37 @@ public handler OnLoad(in pProperties as Array)
 	put pProperties["angle"] into mAngle
    put pProperties["borderWidth"]into mBorderWidth
    put pProperties["opaque"] into mOpaque
-   -- put property "opaque" of my script object into mOpaque
+   --put property "opaque" of my script object into mOpaque
    put pProperties["label"] into mLabelText
    -- set property "tooltip" of my script object to "SVG Shape"
 	-- if "iconPresetName" is among the keys of pProperties then
-		put pProperties["iconPresetName"] into mIconPresetName
-	--end if
+	put pProperties["iconPresetName"] into mIconPresetName
+
 	-- Older SVG widgets do not have this property
 	if "fillRule" is among the keys of pProperties then
 		put pProperties["fillRule"] into mFillRule
 	end if
-	put stringToColor(pProperties["foregroundColor"]) into mForegroundColor
-   put pProperties["foregroundPattern"] into mForegroundPattern
-	put stringToColor(pProperties["backgroundColor"]) into mBackgroundColor
-   put pProperties["backgroundPattern"] into mBackgroundPattern
-	put stringToColor(pProperties["borderColor"]) into mBorderColor
-   put pProperties["borderPattern"] into mBorderPattern
-	put stringToColor(pProperties["hiliteColor"]) into mHiliteColor
+   if "foregroundColor" is among the keys of pProperties then
+	     put stringToColor(pProperties["foregroundColor"]) into mForegroundColor
+  end if
+  if "foregroundPattern" is among the keys of pProperties then
+     put pProperties["foregroundPattern"] into mForegroundPattern
+   end if
+   if "backgroundColor" is among the keys of pProperties then
+      put stringToColor(pProperties["backgroundColor"]) into mBackgroundColor
+    end if
+    if "backgroundPattern" is among the keys of pProperties then
+      put pProperties["backgroundPattern"] into mBackgroundPattern
+    end if
+   if "borderColor" is among the keys of pProperties then
+      put stringToColor(pProperties["borderColor"]) into mBorderColor
+    end if
+   if "borderPattern" is among the keys of pProperties then
+     put pProperties["borderPattern"] into mBorderPattern
+   end if
+   if "hiliteColor" is among the keys of pProperties then
+      put stringToColor(pProperties["hiliteColor"]) into mHiliteColor
+    end if
    if "hilitePattern" is among the keys of pProperties then
       put pProperties["hilitePattern"] into mHilitePattern
    end if
