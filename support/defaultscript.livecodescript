@@ -1,4 +1,4 @@
-﻿script "org.openxtalk.widget.svgshape.__DefaultScript"
+﻿script "org.openxtalk.widget.svgraphic.__DefaultScript"
 on mouseUp
    -- Toggle the hilited property when clicked
    -- set the hilited of me to (not the hilited of me)
