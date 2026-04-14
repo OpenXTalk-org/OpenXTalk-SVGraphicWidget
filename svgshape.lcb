@@ -1060,10 +1060,10 @@ public handler OnPaint()
 		constrainPathToRect( tNewPathRect, tPath)
 		-- 	constrainPathToRect(my bounds, tPath)
 	else
-		scale tPath by [my width / (the width of the bounding box of tPath +  (mBorderWidth*2)), \
-				my height / (the height of the bounding box of tPath + (mBorderWidth/2)) ]
+		scale tPath by [ (my width - mBorderWidth) / (the width of the bounding box of tPath ), \
+				(my height - mBorderWidth) / (the height of the bounding box of tPath ) ]
 		put the bounding box of tPath into tBounds
-		translate tPath by [(the left of tBounds * -1) + mBorderWidth, (the top of tBounds * -1) + mBorderWidth]
+		translate tPath by [(the left of tBounds * -1) + (mBorderWidth/2), (the top of tBounds * -1) + (mBorderWidth/2)]
 	end if
 
 	if mOpaque then
