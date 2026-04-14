@@ -97,6 +97,13 @@
   <property name="label" get="string" set="string"/>
   <metadata key="label.label">Label Text</metadata>
   <metadata key="label.default"></metadata>
+  <property name="textAlign" get="string" set="string"/>
+  <metadata key="textAlign.editor">com.livecode.pi.enum</metadata>
+  <metadata key="textAlign.options">Center,CenterLeft,CenterRight,CenterTop,CenterBottom,Left,BottomLeft,Right,BottomRight</metadata>
+  <metadata key="textAlign.default">Left</metadata>
+  <metadata key="textAlign.label">Label text alignment</metadata>
+  <handler name="setTextAlign" parameters="in string" return="any"/>
+  <handler name="getTextAlign" parameters="" return="any"/>
   <property name="borderWidth" get="number" set="number"/>
   <metadata key="borderWidth.editor">com.livecode.pi.number</metadata>
   <metadata key="borderWidth.label">Border width</metadata>

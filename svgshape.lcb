@@ -512,6 +512,24 @@ private handler setLabelText(in pString as String)
 	redraw all
 end handler
 
+private variable mTextAlign as String
+property "textAlign"       get mTextAlign      set setTextAlign
+metadata textAlign.editor is "com.livecode.pi.enum"
+metadata textAlign.options is "Center,CenterLeft,CenterRight,CenterTop,CenterBottom,Left,BottomLeft,Right,BottomRight"
+metadata textAlign.default is "Left"
+metadata textAlign.label is "Label text alignment"
+public handler setTextAlign( in pAlign as String)
+   if pAlign is "Center" or pAlign is "CenterLeft" or pAlign is "CenterRight" or pAlign is "CenterTop" or pAlign is "CenterBottom" \
+       or pAlign is "Left" or pAlign is "BottomLeft" or pAlign is "Right" or pAlign is "BottomRight" then
+      put pAlign into mTextAlign
+   else
+      throw "textAlign must be one of Center,CenterLeft,CenterRight,CenterTop,CenterBottom,Left,BottomLeft,Right,BottomRight, or empty"
+      put "" into mTextAlign
+   end if
+end handler
+public handler getTextAlign( )
+    return mTextAlign
+end handler
 /**
 Syntax:
 set the borderWidth of <widget> to <pColor>
@@ -807,6 +825,8 @@ public handler OnSave(out rProperties as Array)
    put mBorderWidth into rProperties["borderWidth"]
    put mOpaque into rProperties["opaque"]
    put mLabelText into rProperties["label"]
+   put mTextAlign into rProperties["textAlign"]
+
    put mToolTip into rProperties["tooltip"]
    if mForegroundColor is not nothing then
 	     put colorToString(mForegroundColor,false) into rProperties["foregroundColor"]
@@ -841,9 +861,10 @@ public handler OnLoad(in pProperties as Array)
    put pProperties["points"] into mPoints
    setPoints(mPoints)
    put pProperties["iconPath"] into mPath
-
 	put pProperties["borderWidth"] into mBorderWidth
    put pProperties["hilited"] into mHilited
+   put pProperties["textAlign"] into mTextAlign
+   put pProperties["label"] into mTextAlign
 
    if "fillRule" is among the keys of pProperties then
       put pProperties["fillRule"] into mFillRule
@@ -1078,30 +1099,55 @@ public handler OnPaint()
 	set the stroke width of this canvas to mBorderWidth
 	set the paint of this canvas to my border paint
 	stroke tPath on this canvas
-   if mLabelText is not nothing then
+
+   if mLabelText is not "" then
       set the font of this canvas to my font
       if mLabelTextColor is not empty then
          set the paint of this canvas to solid paint with mLabelTextColor
-         -- if mTextAlign is "center" then
-         fill text mLabelText at center of my bounds on this canvas
       else
          set the paint of this canvas to my top paint -- my border paint? my topColor paint? What are the others?
-         fill text mLabelText at center of my bounds on this canvas
       end if
-      -- if mGradientRamp is not nothing then
-      if mGradientRamp is not empty then
-            put linear gradient with ramp mGradientRamp into tGradient
-            -- put rectangle path of my bounds into tPath
-            set the from of tGradient to point [the right of my bounds / 2,0]
-            set the to of tGradient to point [the right of my bounds / 2, the bottom of my bounds /2]
-            -- set the via of tGradient to point [the left of my bounds / 2, the bottom of my bounds]
-            set the paint of this canvas to tGradient
-            fill text mLabelText at center of my bounds on this canvas
+      variable tTextBounds as Rectangle
+      measure mLabelText on this canvas
+      put the result into tTextBounds
+      if mTextAlign is "Center" then
+          fill text mLabelText at center of my bounds on this canvas
+          if mGradientRamp is not empty then
+                put linear gradient with ramp mGradientRamp into tGradient
+                set the from of tGradient to point [0 + the top of tTextBounds, the left of my bounds / 2]
+                set the to of tGradient to point [the bottom of my bounds - the size of my font, the bottom of my bounds - the bottom of tTextBounds]
+                -- set the via of tGradient to point [the left of my bounds / 2, the bottom of my bounds]
+                set the paint of this canvas to tGradient
+                fill text mLabelText at center of my bounds on this canvas
+          end if
+      else if mTextAlign is "" or mTextAlign is "Left" then
+         fill text mLabelText at point [0,the size of my font] on this canvas
+         if mGradientRamp is not empty then
+               put linear gradient with ramp mGradientRamp into tGradient
+               set the from of tGradient to point [the left of my bounds - the left of tTextBounds,the top of my bounds - the top of tTextBounds]
+               set the to of tGradient to point [the left of my bounds - the left of tTextBounds, the bottom of my bounds - the bottom of tTextBounds]
+               set the paint of this canvas to tGradient
+               fill text mLabelText at point [0,the size of my font] on this canvas
+         end if
+      else if mTextAlign is "Right" then
+         fill text mLabelText at point [the right of my bounds - the right of tTextBounds,the size of my font] on this canvas
+         if mGradientRamp is not empty then
+               put linear gradient with ramp mGradientRamp into tGradient
+               set the from of tGradient to point [the left of tTextBounds,the top of tTextBounds]
+               set the to of tGradient to point [the left of tTextBounds, the bottom of tTextBounds]
+               set the paint of this canvas to tGradient
+               fill text mLabelText at point [the right of my bounds - the right of tTextBounds,the size of my font] on this canvas
+         end if
+      else if mTextAlign is "BottomRight" then
+         fill text mLabelText at point [the right of my bounds - the right of tTextBounds, the bottom of my bounds - the size of my font] on this canvas
+         if mGradientRamp is not empty then
+               put linear gradient with ramp mGradientRamp into tGradient
+               set the from of tGradient to point [the left of tTextBounds,the top of tTextBounds]
+               set the to of tGradient to point [the left of tTextBounds, the bottom of tTextBounds]
+               set the paint of this canvas to tGradient
+               fill text mLabelText at point [the right of my bounds - the right of tTextBounds,the size of my font] on this canvas
+         end if
       end if
-      -- stroke text mLabelText at center of my bounds on this canvas --- wish this syntax worked, it does not
-		--   fill text mLabel at point [ the width of tLabelRect /2 , my height / 2 + 4 ] on this canvas
-		-- 	fill text mLabel at point [ my width / 2 , my height / 2 ] on this canvas
-		--     end if
 		-- put 0 into  mLabelLocHorizontalOffset
 		-- put 0 into  mLabelLocHVerticalOffset
 	end if
