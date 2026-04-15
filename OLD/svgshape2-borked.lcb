@@ -58,7 +58,7 @@ Name: foregroundPattern
 
 Type: property
 
-Name: textFillGradient
+Name: fillGradient
 
 Type: property
 
@@ -116,14 +116,15 @@ private variable mToolTip as String
 private variable mMaintainAspectRatio as Boolean
 -- some SVG Paths need to be flipped (all Font Awesome SVG paths do, Adobe Illustrator SVG does not)
 private variable mFlipVertically as Boolean
+private variable mAngle as Real
 private variable mScaledWidth as Real
 private variable mScaledHeight as Real
 private variable mWidth as Real
 private variable mHeight as Real
 
-private variable mTextSize as Real
-property textSize get mTextSize set setTextSize
--- metadata textSize.default is "60.0"
+private variable mTextSize
+property textSize get mTextSize -- set setTextSize
+-- metadata textSize.default is "60"
 private handler setTextSize(in pTextSize as Real)
 	put pTextSize into mTextSize
 	redraw all
@@ -189,19 +190,17 @@ private variable mGradientHandleSize as Integer
 private variable mGradientHandleBorderColor as Color
 private variable mGradientRamp as List
 
-private variable mTextFillGradient as optional String
-property "textFillGradient" get getTextFillGradient set setTextFillGradient
-metadata textFillGradient.editor is "com.livecode.pi.gradientramp"
-metadata textFillGradient.default is "0,0,0,0,0\n1,0,0,0,255"
--- metadata textFillGradient.default is ""
-metadata textFillGradient.section is "Colors"
-metadata textFillGradient.group is "Text fill gradient"
-public handler getTextFillGradient() returns optional any
-   return mTextFillGradient
-end handler
-public handler setTextFillGradient(in pGradientStops as optional String ) returns nothing
-   put pGradientStops into mTextFillGradient
-   -- log mTextFillGradient
+private variable mFillGradient as optional String
+property "fillGradient" get getFillGradient set setFillGradient
+metadata fillGradient.editor is "com.livecode.pi.gradientramp"
+-- metadata fillGradient.default is "0,0,0,0,0\n0,0,0,0,0"
+metadata fillGradient.default is ""
+metadata fillGradient.section is "Colors"
+metadata fillGradient.group is "Foreground fill"
+
+public handler setFillGradient(in pGradientStops as optional String ) returns nothing
+   put pGradientStops into mFillGradient
+   -- log mFillGradient
    put the empty list into mGradientRamp
    variable tStops as List
    split pGradientStops by newline
@@ -238,6 +237,7 @@ push gradient stop at 1 with color [0,0,1] onto tRamp
 variable tGradient
 put linear gradient with ramp tRamp into tGradient
 */
+
 private handler reorderGradientRamp() returns nothing
    variable tRampIsInOrder as Boolean
    put true into tRampIsInOrder
@@ -259,6 +259,10 @@ private handler reorderGradientRamp() returns nothing
    if not tRampIsInOrder then
       reorderGradientRamp()
    end if
+end handler
+
+public handler getFillGradient() returns optional any
+   return  mFillGradient
 end handler
 
 property gradientStops get getGradientStops set setGradientStops
@@ -328,7 +332,7 @@ is drawn on top of.
 private variable mBackgroundColor as optional Color
 property "backgroundColor" get getBackgroundColor set setBackgroundColor
 metadata backgroundColor.editor is "com.livecode.pi.color"
-metadata backgroundColor.default is ""
+metadata backgroundColor.default is "0,0,0"
 metadata backgroundColor.section is "Colors"
 metadata backgroundColor.label is "Background color"
 metadata backgroundColor.group is "Background fill"
@@ -493,7 +497,7 @@ property "labelTextColor"          get getLabelTextColor        set setLabelText
 metadata labelTextColor.label is "Text Color"
 metadata labelTextColor.section is "Colors"
 metadata labelTextColor.editor is "com.livecode.pi.color"
-metadata labelTextColor.default is "127,255,0"
+metadata labelTextColor.default is ""
 metadata labelTextColor.user_visible is "true"
 private handler getLabelTextColor() returns String
 	return colorToString(mLabelTextColor,false)
@@ -527,10 +531,10 @@ public handler setTextAlign( in pAlign as String)
       put pAlign into mTextAlign
    else
       throw "textAlign must be one of Center,CenterLeft,CenterRight,CenterTop,CenterBottom,Left,BottomLeft,Right,BottomRight, or empty"
-      -- put "Center" into mTextAlign
+      put "" into mTextAlign
    end if
 end handler
-public handler getTextAlign() returns String
+public handler getTextAlign( )
     return mTextAlign
 end handler
 /**
@@ -548,9 +552,9 @@ private variable mBorderWidth as Number
 property "borderWidth" get mBorderWidth  set setBorderWidth
 metadata borderWidth.editor is "com.livecode.pi.number"
 metadata borderWidth.label is "Border width"
-metadata borderWidth.step is "0.5"
+metadata borderWidth.step is "0.1"
 metadata borderWidth.default is "1"
-metadata borderWidth.min is "0.1"
+metadata borderWidth.min is "0"
 metadata borderWidth.max is "144"
 --- lineSize is synonym for borderWidth property, scripters can use either syntax.
 --- lineSize synonym allows for property compastibility with 'Graphic classic control' objects.
@@ -583,7 +587,7 @@ You can get a list of available predefined path names by running
 */
 property "iconPresetName" get mIconPresetName set setPathPreset
 metadata iconPresetName.editor is "com.livecode.pi.svgicon"
-metadata iconPresetName.default is "comment"
+metadata iconPresetName.default is "Puzzle Piece"
 metadata iconPresetName.label is "Preset"
 
 /**
@@ -736,28 +740,10 @@ The <angle> property controls the angle of rotation of for the SVG path
 around the centre of the path's bounding box.  The rotation is in clockwise
 degrees.
 */
-private variable mAngle as Real
 property "angle" get mAngle set setAngle
 metadata angle.editor is "com.livecode.pi.number"
 metadata angle.default is "0"
 metadata angle.label is "Rotation"
-public handler setAngle(in pAngle as Number) returns nothing
-	put pAngle into mAngle
-	CalculateScaledSizes()
-	redraw all
-end handler
-
-private variable mTextGradientAngle as Real
-property "textGradientAngle" get mTextGradientAngle set setTextGradientAngle
-metadata textGradientAngle.editor is "com.livecode.pi.number"
-metadata textGradientAngle.default is "0"
-metadata textGradientAngle.section is "Colors"
-metadata textGradientAngle.label is "Text gradient angle"
-public handler setTextGradientAngle(in pAngle as Number) returns nothing
-	put pAngle into mTextGradientAngle
-	-- CalculateScaledSizes()
-	redraw all
-end handler
 
 /**
 Syntax:
@@ -796,31 +782,69 @@ public handler setFillRule(in pRule as String) returns nothing
 	redraw all
 end handler
 
--- called when widget is created
+-- called when widget is created --
+-- NOTE: 'MY SCRIPT OBJECT' ACCESS is NOT ALLOWED in this context!
+---The current script object could be said to be of the
+-- 'class' of 'Widget template' at this instance creation point.
+/*
 public handler OnCreate()
-    put true into mOpaque
-   --  put "" into mLabelText
+   -- get property "name" of my script object
+   --  log the result
+   put true into mOpaque
 	put 0 into mAngle
 	put 1 into mBorderWidth
    put false into mHilited
    put true into mMaintainAspectRatio
    put false into mFlipVertically
-   put the color of my highlight paint into mHiliteColor
-	put the color of my border paint into mBorderColor
+	put "Center" into mTextAlign
    put the color of my focus paint into mLabelTextColor
+	put the color of my border paint into mBorderColor
+   put "Hello!" into mLabelText
+   -- setTextSize(60)
+   -- setFillGradient("0,0,0,0,0\n1,0,0,0,255")
+	put "non-zero" into mFillRule
+end handler
+/*
+public handler OnOpen()
+   -- variable tTextSize as optional any
+   -- get property "textSize" of my script object
+   -- put the result into tTextSize
+   -- if tTextSize is nothing then
+   --    set property "textSize" of my script object to 60
+   -- end if
+end handler
+*/
+
+public handler OnCreate()
+   put true into mOpaque
+   put "Hello!" into mLabelText
+	put 0 into mAngle
+	put 1 into mBorderWidth
+   put false into mHilited
+   put true into mMaintainAspectRatio
+   put false into mFlipVertically
+   -- put nothing into mForegroundColor
+   -- put nothing into mBackgroundColor
+   -- put the color of my highlight paint into mHiliteColor
+	 put the color of my border paint into mBorderColor
+   put the color of my border paint into mLabelTextColor
    -- put the color of my top paint into mLabelTextColor
 	-- put the color of my background paint into mBackgroundColor
-   setTextFillGradient("0,0,0,0,0\n1,0,0,0,255")
+   -- variable tPaint
+   -- put my foreground paint into tPaint
+   -- log [tPaint]
+   -- put the color of my foreground paint into mForegroundColor
+   -- log [mForegroundColor]
+   --else
+   --   log [mForegroundPattern]
+   --end if
+   setFillGradient("0,0,0,0\n1,0,0,0")
 	put "non-zero" into mFillRule
-	setPathPreset("comment")
+	setPathPreset("Puzzle Piece")
    -- get property "name" of my script object
    --  log the result
    redraw all
 end handler
--- public handler OnOpen()
---   get property "name" of my script object
---   log the result
--- end handler
 
 public handler OnSave(out rProperties as Array)
 	put the empty array into rProperties
@@ -862,8 +886,11 @@ public handler OnSave(out rProperties as Array)
    if mLabelTextColor is not nothing then
        put colorToString(mLabelTextColor,false) into rProperties["labelTextColor"]
    end if
-   if mTextFillGradient is not nothing then
-      put mTextFillGradient into rProperties["textFillGradient"]
+   if mFillGradient is not nothing then
+      put mFillGradient into rProperties["fillGradient"]
+   end if
+   if mTextSize is not nothing then
+      put mTextSize into rProperties["textSize"]
    end if
 end handler
 
@@ -929,9 +956,12 @@ public handler OnLoad(in pProperties as Array)
    if "labelTextColor" is among the keys of pProperties then
       put stringToColor(pProperties["labelTextColor"]) into mLabelTextColor
    end if
-   if "textFillGradient" is among the keys of pProperties then
-      put pProperties["textFillGradient"] into mTextFillGradient
-      setTextFillGradient(mTextFillGradient)
+   if "fillGradient" is among the keys of pProperties then
+      put pProperties["fillGradient"] into mFillGradient
+      setFillGradient(mFillGradient)
+   end if
+   if "textSize" is among the keys of pProperties then
+      put pProperties["textSize"] into mTextSize
    end if
 	CalculateScaledSizes()
    redraw all
@@ -939,10 +969,6 @@ end handler
 ----------
 /*
 put mTextFont into rProperties["textFont"]
-put mTextSize into rProperties["textSize"]
-put mLabel into rProperties["label"]
-put mIconImageFilePath into rProperties["iconImageFilePath"]
-put mIconImageText into rProperties["iconImageText"]
 */
 
 -- this handler is called when the widget is resized
@@ -1049,6 +1075,12 @@ public handler setPathPreset(in pPresetName as String) returns nothing
 	redraw all
 end handler
 
+public handler setAngle(in pAngle as Number) returns nothing
+	put pAngle into mAngle
+	CalculateScaledSizes()
+	redraw all
+end handler
+
 -- called whenever LiveCode needs to redraw the widget
 public handler OnPaint()
    variable tPath as Path
@@ -1115,14 +1147,14 @@ public handler OnPaint()
       variable tTextBounds as Rectangle
       measure mLabelText on this canvas
       put the result into tTextBounds
+      -- translate tTextBounds by [the left of tRect, the top of tRect]
       if mTextAlign is "Center" then
           fill text mLabelText at center of my bounds on this canvas
           if mGradientRamp is not empty then
                 put linear gradient with ramp mGradientRamp into tGradient
-                set the from of tGradient to point [0 + the top of tTextBounds, the left of my bounds / 2]
-                set the to of tGradient to point [the bottom of my bounds - the size of my font, the bottom of my bounds - the bottom of tTextBounds]
+                set the from of tGradient to point [the top of my bounds + the top of tTextBounds, the right of my bounds / 2]
+                set the to of tGradient to point [the bottom of my bounds - the bottom of tTextBounds, the right of my bounds / 2 ]
                 -- set the via of tGradient to point [the left of my bounds / 2, the bottom of my bounds]
-                rotate tGradient by mTextGradientAngle
                 set the paint of this canvas to tGradient
                 fill text mLabelText at center of my bounds on this canvas
           end if

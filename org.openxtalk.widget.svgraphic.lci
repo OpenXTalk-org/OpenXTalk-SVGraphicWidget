@@ -19,8 +19,8 @@ import module org.openxtalk.widget.svgraphic
   handler getForegroundColor() returns String
   handler setForegroundColor(in pColor as String) returns nothing
   handler setForegroundPattern(in pPattern as optional Number) returns nothing
-  handler setFillGradient(in pGradientStops as optional String) returns nothing
-  handler getFillGradient() returns optional any
+  handler getTextFillGradient() returns optional any
+  handler setTextFillGradient(in pGradientStops as optional String) returns nothing
   handler getGradientStops() returns String
   handler setGradientStops(in pColor as String) returns nothing
   handler getBackgroundColor() returns String
@@ -33,10 +33,12 @@ import module org.openxtalk.widget.svgraphic
   handler getHiliteColor() returns String
   handler setHilitePattern(in pPattern as optional Number) returns nothing
   handler setTextAlign(in pColor as String) returns optional any
-  handler getTextAlign() returns optional any
+  handler getTextAlign() returns String
   handler setBorderWidth(in pBorderWidth as Number) returns nothing
   handler setIsHilited(in pBoolean as Boolean) returns optional any
   handler setMaintainAspectRatio(in pBoolean as Boolean) returns optional any
+  handler setAngle(in pBorderWidth as Number) returns nothing
+  handler setTextGradientAngle(in pBorderWidth as Number) returns nothing
   handler setFillRule(in pColor as String) returns nothing
   handler OnCreate() returns optional any
   handler OnSave(out rProperties as Array) returns optional any
@@ -50,6 +52,5 @@ import module org.openxtalk.widget.svgraphic
   handler setPath(in pColor as String) returns nothing
   handler setPoints(in pColor as String) returns nothing
   handler setPathPreset(in pColor as String) returns nothing
-  handler setAngle(in pBorderWidth as Number) returns nothing
   handler OnPaint() returns optional any
 end module

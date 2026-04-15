@@ -58,7 +58,7 @@ Name: foregroundPattern
 
 Type: property
 
-Name: textFillGradient
+Name: fillGradient
 
 Type: property
 
@@ -109,6 +109,7 @@ metadata version is "1.0"
 metadata preferredSize is "128,128"
 metadata svgicon is "M1.938626 69.046021Q0.989949 67.712555 0.989949 65.885216 0.989949 64.798683 1.351350 63.835629 1.712751 62.872574 2.367789 62.156452 3.022828 61.440331 3.881155 61.045231 4.739481 60.650131 5.778508 60.650131 8.443837 60.650131 9.799090 63.070122 11.696444 66.280312 14.542473 67.910103 17.388504 69.539894 20.686283 69.539894 23.261263 69.539894 25.542604 68.428673 27.823946 67.317451 29.518013 65.440727 31.212076 63.563995 32.205933 61.020538 33.199783 58.477077 33.199783 55.612602 33.199783 52.896286 32.273689 50.500984 31.347601 48.105690 29.766474 46.303043 28.185347 44.500397 26.084705 43.364483 23.984064 42.228569 21.634960 41.981632 18.020954 41.635918 14.903873 39.907356 11.786794 38.178791 9.437690 35.437778 7.088585 32.696770 5.755920 29.165558 4.423255 25.634350 4.423255 21.683342 4.423255 16.843361 6.094733 12.917053 7.766212 8.990738 11.018817 5.928711L10.973642 5.928711Q16.168776 0.989952 23.170914 0.989952 25.429667 0.989952 27.688421 1.607300 29.947176 2.224648 32.047813 3.484024 34.148460 4.743408 35.978050 6.620140 37.807640 8.496864 39.253242 11.015633 39.930870 12.299706 39.930870 13.830719 39.930870 14.966637 39.569466 15.904999 39.208069 16.843361 38.553024 17.559483 37.897987 18.275600 37.017075 18.670704 36.136162 19.065804 35.142311 19.065804 34.238808 19.065804 33.538597 18.769478 32.838379 18.473152 32.273689 17.929890 31.709002 17.386627 31.189489 16.670506 30.669977 15.954384 30.082701 15.016022 28.998499 13.287460 27.123734 12.423172 25.248966 11.558891 23.080563 11.558891 21.363911 11.558891 19.737608 12.324402 18.111305 13.089905 16.846403 14.423370 15.581501 15.756836 14.790936 17.584175 14.000372 19.411514 14.000372 21.535179 14.000372 23.461296 14.655411 25.189861 15.310450 26.918427 16.439827 28.276585 17.569204 29.634743 19.082569 30.499023 20.595934 31.363304 22.357761 31.511467 26.559044 31.857182 30.263399 33.882072 33.967758 35.906963 36.746025 39.141846 39.524292 42.376732 41.150597 46.574677 42.776901 50.772617 42.776901 55.415047 42.776901 66.971741 34.961609 74.182320L35.006783 74.182320Q28.727448 80.010056 20.731459 80.010056 18.066130 80.010056 15.400801 79.293938 12.735470 78.577820 10.273428 77.194962 7.811386 75.812111 5.665570 73.737839 3.519754 71.663559 1.938626 69.046021ZM78.283600 80.010056Q75.121346 80.010056 73.901619 76.701088L49.642601 8.891968Q49.100502 7.360947 49.100502 6.225037 49.100502 5.138512 49.461899 4.175453 49.823303 3.212395 50.478340 2.496277 51.133377 1.780159 51.991707 1.385056 52.850029 0.989952 53.889061 0.989952 57.051315 0.989952 58.316216 4.101372L78.283600 60.255028 98.250992 4.101372Q99.335197 0.989952 102.678154 0.989952 103.672005 0.989952 104.552917 1.385056 105.433830 1.780159 106.088867 2.496277 106.743904 3.212395 107.105309 4.175453 107.466705 5.138512 107.466705 6.225037 107.466705 7.509109 106.924606 8.891968L82.665588 76.701088Q81.445854 80.010056 78.283600 80.010056ZM174.641129 67.465614Q174.641129 69.539894 173.150345 71.219070 163.076309 80.010056 150.427292 80.010056 135.429153 80.010056 124.858200 68.453369 114.287231 56.896675 114.287231 40.500004 114.287231 24.152721 124.858200 12.596031 135.474335 0.989952 150.427292 0.989952 163.257004 0.989952 173.602097 10.225426 174.867004 11.509506 174.867004 13.830719 174.867004 14.966637 174.505600 15.904999 174.144196 16.843361 173.489166 17.559483 172.834122 18.275600 171.953217 18.670704 171.072296 19.065804 170.078445 19.065804 168.226273 19.065804 166.780670 17.584175 163.347366 14.620926 159.213837 13.040520 155.080322 11.460121 150.427292 11.460121 139.404572 11.460121 131.589279 20.004166 123.864349 28.449440 123.864349 40.500004 123.864349 52.599960 131.589279 61.045231 139.359390 69.539894 150.427292 69.539894 158.603973 69.539894 165.064011 64.848076L165.064011 49.537930 152.595688 49.537930Q150.562805 49.537930 149.184967 48.031609 147.807129 46.525288 147.807129 44.302849 147.807129 43.216320 148.168533 42.253265 148.529938 41.290207 149.184967 40.574085 149.840012 39.857967 150.698334 39.462868 151.556656 39.067764 152.595688 39.067764L169.897751 39.067764Q170.846420 39.067764 171.704742 39.487560 172.563080 39.907356 173.218109 40.623474 173.873154 41.339592 174.257141 42.302650 174.641129 43.265709 174.641129 44.302849L174.641129 67.465614ZM191.490524 29.832291L191.490524 30.820042Q194.878647 27.856789 198.854050 26.276386 202.829468 24.695984 207.346970 24.695984 209.334671 24.695984 211.616013 24.992310 213.897354 25.288635 215.817291 26.054142 217.737244 26.819649 219.002136 28.153114 220.267044 29.486580 220.267044 31.610245 220.267044 32.696770 219.883057 33.635136 219.499069 34.573498 218.866623 35.289616 218.234161 36.005737 217.375839 36.400837 216.517517 36.795937 215.523666 36.795937 214.665329 36.795937 213.535950 36.252674 210.689926 35.017986 207.346970 35.017986 204.049194 35.017986 201.157990 36.376144 198.266785 37.734303 196.120956 40.080212 193.975143 42.426121 192.732834 45.586926 191.490524 48.747726 191.490524 52.353020L191.490524 74.873749Q191.490524 76.997414 190.112671 78.503738 188.734833 80.010056 186.792313 80.010056 184.804611 80.010056 183.426773 78.503738 182.048935 76.997414 182.048935 74.873749L182.048935 29.832291Q182.048935 27.708626 183.426773 26.202305 184.804611 24.695984 186.792313 24.695984 188.734833 24.695984 190.112671 26.202305 191.490524 27.708626 191.490524 29.832291ZM264.176331 64.354202Q266.209198 64.354202 267.541870 65.811134 268.874542 67.268066 268.874542 69.490501 268.874542 71.663559 267.383759 73.293350 260.381622 80.010056 250.894836 80.010056 240.414230 80.010056 233.005508 71.910492 225.596802 63.810936 225.596802 52.353020 225.596802 40.895107 233.005508 32.795544 240.414230 24.695984 250.894836 24.695984 260.426788 24.695984 267.383759 31.412693 269.010071 32.993095 269.010071 35.314312 269.010071 37.536751 267.677399 39.018379 266.344727 40.500004 264.311859 40.500004 262.595215 40.500004 261.239960 39.314705 258.936035 37.191040 256.406219 36.104511 253.876389 35.017986 250.894836 35.017986 247.597061 35.017986 244.705856 36.376144 241.814651 37.734303 239.646255 40.080212 237.477844 42.426121 236.235535 45.586926 234.993210 48.747726 234.993210 52.353020 234.993210 55.958313 236.235535 59.119118 237.477844 62.279922 239.646255 64.625832 241.814651 66.971741 244.705856 68.329895 247.597061 69.688057 250.894836 69.688057 253.876389 69.688057 256.406219 68.626221 258.936035 67.564392 261.194763 65.440727 262.459686 64.403587 264.176331 64.354202Z"
 -- metadata _ide is "true"
+
 private variable mIconPresetName as String
 private variable mPath as String
 private variable mHilited as Boolean
@@ -116,18 +117,11 @@ private variable mToolTip as String
 private variable mMaintainAspectRatio as Boolean
 -- some SVG Paths need to be flipped (all Font Awesome SVG paths do, Adobe Illustrator SVG does not)
 private variable mFlipVertically as Boolean
+private variable mAngle as Real
 private variable mScaledWidth as Real
 private variable mScaledHeight as Real
 private variable mWidth as Real
 private variable mHeight as Real
-
-private variable mTextSize as Real
-property textSize get mTextSize set setTextSize
--- metadata textSize.default is "60.0"
-private handler setTextSize(in pTextSize as Real)
-	put pTextSize into mTextSize
-	redraw all
-end handler
 
 /**
 Syntax:
@@ -182,26 +176,24 @@ public handler setForegroundPattern(in pPattern as optional Number ) returns not
    redraw all
 end handler
 
----------------- GRADIENTS ------------------------------------
+---------------- ADD GRADIENTS ------------------------------------
 
 private variable mGradientRectangle as Rectangle
 private variable mGradientHandleSize as Integer
 private variable mGradientHandleBorderColor as Color
 private variable mGradientRamp as List
 
-private variable mTextFillGradient as optional String
-property "textFillGradient" get getTextFillGradient set setTextFillGradient
-metadata textFillGradient.editor is "com.livecode.pi.gradientramp"
-metadata textFillGradient.default is "0,0,0,0,0\n1,0,0,0,255"
--- metadata textFillGradient.default is ""
-metadata textFillGradient.section is "Colors"
-metadata textFillGradient.group is "Text fill gradient"
-public handler getTextFillGradient() returns optional any
-   return mTextFillGradient
-end handler
-public handler setTextFillGradient(in pGradientStops as optional String ) returns nothing
-   put pGradientStops into mTextFillGradient
-   -- log mTextFillGradient
+private variable mFillGradient as optional String
+property "fillGradient" get getFillGradient set setFillGradient
+metadata fillGradient.editor is "com.livecode.pi.gradientramp"
+-- metadata fillGradient.default is "0,0,0,0,0\n0,0,0,0,0"
+metadata fillGradient.default is ""
+metadata fillGradient.section is "Colors"
+metadata fillGradient.group is "Foreground fill"
+
+public handler setFillGradient(in pGradientStops as optional String ) returns nothing
+   put pGradientStops into mFillGradient
+   -- log mFillGradient
    put the empty list into mGradientRamp
    variable tStops as List
    split pGradientStops by newline
@@ -238,6 +230,7 @@ push gradient stop at 1 with color [0,0,1] onto tRamp
 variable tGradient
 put linear gradient with ramp tRamp into tGradient
 */
+
 private handler reorderGradientRamp() returns nothing
    variable tRampIsInOrder as Boolean
    put true into tRampIsInOrder
@@ -259,6 +252,10 @@ private handler reorderGradientRamp() returns nothing
    if not tRampIsInOrder then
       reorderGradientRamp()
    end if
+end handler
+
+public handler getFillGradient() returns optional any
+   return  mFillGradient
 end handler
 
 property gradientStops get getGradientStops set setGradientStops
@@ -328,7 +325,7 @@ is drawn on top of.
 private variable mBackgroundColor as optional Color
 property "backgroundColor" get getBackgroundColor set setBackgroundColor
 metadata backgroundColor.editor is "com.livecode.pi.color"
-metadata backgroundColor.default is ""
+metadata backgroundColor.default is "0,0,0"
 metadata backgroundColor.section is "Colors"
 metadata backgroundColor.label is "Background color"
 metadata backgroundColor.group is "Background fill"
@@ -506,7 +503,7 @@ end handler
 private variable mLabelText as String
 property "label" get getLabelText set setLabelText
 metadata label.label is "Label Text"
-metadata label.default is "Hello!"
+metadata label.default is ""
 private handler getLabelText() returns String
 	return mLabelText
 end handler
@@ -519,7 +516,7 @@ private variable mTextAlign as String
 property "textAlign"       get mTextAlign      set setTextAlign
 metadata textAlign.editor is "com.livecode.pi.enum"
 metadata textAlign.options is "Center,CenterLeft,CenterRight,CenterTop,CenterBottom,Left,BottomLeft,Right,BottomRight"
-metadata textAlign.default is "Center"
+metadata textAlign.default is "Left"
 metadata textAlign.label is "Label text alignment"
 public handler setTextAlign( in pAlign as String)
    if pAlign is "Center" or pAlign is "CenterLeft" or pAlign is "CenterRight" or pAlign is "CenterTop" or pAlign is "CenterBottom" \
@@ -527,10 +524,10 @@ public handler setTextAlign( in pAlign as String)
       put pAlign into mTextAlign
    else
       throw "textAlign must be one of Center,CenterLeft,CenterRight,CenterTop,CenterBottom,Left,BottomLeft,Right,BottomRight, or empty"
-      -- put "Center" into mTextAlign
+      put "" into mTextAlign
    end if
 end handler
-public handler getTextAlign() returns String
+public handler getTextAlign( )
     return mTextAlign
 end handler
 /**
@@ -583,7 +580,7 @@ You can get a list of available predefined path names by running
 */
 property "iconPresetName" get mIconPresetName set setPathPreset
 metadata iconPresetName.editor is "com.livecode.pi.svgicon"
-metadata iconPresetName.default is "comment"
+metadata iconPresetName.default is "Puzzle Piece"
 metadata iconPresetName.label is "Preset"
 
 /**
@@ -736,28 +733,10 @@ The <angle> property controls the angle of rotation of for the SVG path
 around the centre of the path's bounding box.  The rotation is in clockwise
 degrees.
 */
-private variable mAngle as Real
 property "angle" get mAngle set setAngle
 metadata angle.editor is "com.livecode.pi.number"
 metadata angle.default is "0"
 metadata angle.label is "Rotation"
-public handler setAngle(in pAngle as Number) returns nothing
-	put pAngle into mAngle
-	CalculateScaledSizes()
-	redraw all
-end handler
-
-private variable mTextGradientAngle as Real
-property "textGradientAngle" get mTextGradientAngle set setTextGradientAngle
-metadata textGradientAngle.editor is "com.livecode.pi.number"
-metadata textGradientAngle.default is "0"
-metadata textGradientAngle.section is "Colors"
-metadata textGradientAngle.label is "Text gradient angle"
-public handler setTextGradientAngle(in pAngle as Number) returns nothing
-	put pAngle into mTextGradientAngle
-	-- CalculateScaledSizes()
-	redraw all
-end handler
 
 /**
 Syntax:
@@ -805,14 +784,24 @@ public handler OnCreate()
    put false into mHilited
    put true into mMaintainAspectRatio
    put false into mFlipVertically
-   put the color of my highlight paint into mHiliteColor
+   -- put nothing into mForegroundColor
+   -- put nothing into mBackgroundColor
+   -- put the color of my highlight paint into mHiliteColor
 	put the color of my border paint into mBorderColor
-   put the color of my focus paint into mLabelTextColor
+   put the color of my border paint into mLabelTextColor
    -- put the color of my top paint into mLabelTextColor
 	-- put the color of my background paint into mBackgroundColor
-   setTextFillGradient("0,0,0,0,0\n1,0,0,0,255")
+   -- variable tPaint
+   -- put my foreground paint into tPaint
+   -- log [tPaint]
+   -- put the color of my foreground paint into mForegroundColor
+   -- log [mForegroundColor]
+   --else
+   --   log [mForegroundPattern]
+   --end if
+   setFillGradient("0,0,0,0\n1,0,0,0")
 	put "non-zero" into mFillRule
-	setPathPreset("comment")
+	setPathPreset("Puzzle Piece")
    -- get property "name" of my script object
    --  log the result
    redraw all
@@ -862,8 +851,8 @@ public handler OnSave(out rProperties as Array)
    if mLabelTextColor is not nothing then
        put colorToString(mLabelTextColor,false) into rProperties["labelTextColor"]
    end if
-   if mTextFillGradient is not nothing then
-      put mTextFillGradient into rProperties["textFillGradient"]
+   if mFillGradient is not nothing then
+      put mFillGradient into rProperties["fillGradient"]
    end if
 end handler
 
@@ -875,7 +864,7 @@ public handler OnLoad(in pProperties as Array)
 	put pProperties["borderWidth"] into mBorderWidth
    put pProperties["hilited"] into mHilited
    put pProperties["textAlign"] into mTextAlign
-   put pProperties["label"] into mLabelText
+   put pProperties["label"] into mTextAlign
 
    if "fillRule" is among the keys of pProperties then
       put pProperties["fillRule"] into mFillRule
@@ -929,9 +918,9 @@ public handler OnLoad(in pProperties as Array)
    if "labelTextColor" is among the keys of pProperties then
       put stringToColor(pProperties["labelTextColor"]) into mLabelTextColor
    end if
-   if "textFillGradient" is among the keys of pProperties then
-      put pProperties["textFillGradient"] into mTextFillGradient
-      setTextFillGradient(mTextFillGradient)
+   if "fillGradient" is among the keys of pProperties then
+      put pProperties["fillGradient"] into mFillGradient
+      setFillGradient(mFillGradient)
    end if
 	CalculateScaledSizes()
    redraw all
@@ -1049,6 +1038,12 @@ public handler setPathPreset(in pPresetName as String) returns nothing
 	redraw all
 end handler
 
+public handler setAngle(in pAngle as Number) returns nothing
+	put pAngle into mAngle
+	CalculateScaledSizes()
+	redraw all
+end handler
+
 -- called whenever LiveCode needs to redraw the widget
 public handler OnPaint()
    variable tPath as Path
@@ -1122,7 +1117,6 @@ public handler OnPaint()
                 set the from of tGradient to point [0 + the top of tTextBounds, the left of my bounds / 2]
                 set the to of tGradient to point [the bottom of my bounds - the size of my font, the bottom of my bounds - the bottom of tTextBounds]
                 -- set the via of tGradient to point [the left of my bounds / 2, the bottom of my bounds]
-                rotate tGradient by mTextGradientAngle
                 set the paint of this canvas to tGradient
                 fill text mLabelText at center of my bounds on this canvas
           end if
