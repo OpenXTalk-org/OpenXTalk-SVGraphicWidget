@@ -46,6 +46,15 @@
   <metadata key="textFillGradient.group">Text fill gradient</metadata>
   <handler name="getTextFillGradient" parameters="" return="optional any"/>
   <handler name="setTextFillGradient" parameters="in optional string" return="nothing"/>
+  <property name="textGradientAngle" get="real" set="number"/>
+  <metadata key="textGradientAngle.editor">com.livecode.pi.number</metadata>
+  <metadata key="textGradientAngle.default">0</metadata>
+  <metadata key="textGradientAngle.section">Colors</metadata>
+  <metadata key="textGradientAngle.label">Text gradient angle</metadata>
+  <metadata key="textGradientAngle.step">0.5</metadata>
+  <metadata key="textGradientAngle.min">-359.9</metadata>
+  <metadata key="textGradientAngle.max">359.9</metadata>
+  <handler name="setTextGradientAngle" parameters="in number" return="nothing"/>
   <property name="gradientStops" get="string" set="string"/>
   <metadata key="gradientStops.section">Colors</metadata>
   <metadata key="gradientStops.group">Foreground fill</metadata>
@@ -141,14 +150,8 @@
   <property name="angle" get="real" set="number"/>
   <metadata key="angle.editor">com.livecode.pi.number</metadata>
   <metadata key="angle.default">0</metadata>
-  <metadata key="angle.label">Rotation</metadata>
+  <metadata key="angle.label">SVG Path Rotation</metadata>
   <handler name="setAngle" parameters="in number" return="nothing"/>
-  <property name="textGradientAngle" get="real" set="number"/>
-  <metadata key="textGradientAngle.editor">com.livecode.pi.number</metadata>
-  <metadata key="textGradientAngle.default">0</metadata>
-  <metadata key="textGradientAngle.section">Colors</metadata>
-  <metadata key="textGradientAngle.label">Text gradient angle</metadata>
-  <handler name="setTextGradientAngle" parameters="in number" return="nothing"/>
   <property name="fillRule" get="string" set="string"/>
   <metadata key="fillRule.editor">com.livecode.pi.enum</metadata>
   <metadata key="fillRule.options">non-zero,even odd</metadata>
