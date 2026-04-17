@@ -1129,10 +1129,10 @@ public handler OnPaint()
             translate tPath by [ tTextHOffset / 2, tTextVOffset / 2  + ( the size of my font / 2 ) ]
             put the bounding box of tPath into tTextBounds
             -- log tTextBounds
-            set the from of tGradient to point [ the width of tTextBounds / 2  , the top of tTextBounds ]
-            set the to of tGradient to point [ the width of tTextBounds /2 , the height of tTextBounds ]
-            -- set the via of tGradient to point [ the width of tTextBounds / 2, the height of tTextBounds / 2 ]
-            translate tGradient by [ tTextHOffset, tTextVOffset ] --  + ( the size of my font / 2 )]
+            set the from of tGradient to point [ the top of tTextBounds, the width of tTextBounds / 2  ]
+            set the to of tGradient to point [ the top of tTextBounds + the size of my font , the width of tTextBounds /2 ]
+            -- set the via of tGradient to point [ the height of tTextBounds / 2 , the width of tTextBounds / 2 ]
+            -- translate tGradient by [ tTextHOffset, tTextVOffset ] --  + ( the size of my font / 2 )]
             rotate tGradient by mTextGradientAngle
             rotate tPath by mTextGradientAngle
             stroke tPath on this canvas
