@@ -99,14 +99,15 @@
   <metadata key="hilitePattern.default"></metadata>
   <metadata key="hilitePattern.section">Colors</metadata>
   <handler name="setHilitePattern" parameters="in optional number" return="nothing"/>
-  <property name="labelTextColor" get="string" set="string"/>
-  <metadata key="labelTextColor.label">Text Color</metadata>
-  <metadata key="labelTextColor.section">Colors</metadata>
-  <metadata key="labelTextColor.editor">com.livecode.pi.color</metadata>
-  <metadata key="labelTextColor.default">127,255,0</metadata>
-  <metadata key="labelTextColor.user_visible">true</metadata>
-  <property name="label" get="string" set="string"/>
+  <property name="textColor" get="string" set="string"/>
+  <metadata key="textColor.label">Text Color</metadata>
+  <metadata key="textColor.section">Colors</metadata>
+  <metadata key="textColor.editor">com.livecode.pi.color</metadata>
+  <metadata key="textColor.default">127,255,0</metadata>
+  <metadata key="textColor.user_visible">true</metadata>
+  <property name="label" get="string" set="optional any"/>
   <metadata key="label.label">Label Text</metadata>
+  <metadata key="label.editor">com.livecode.pi.text</metadata>
   <metadata key="label.default">Hello!</metadata>
   <property name="textAlign" get="string" set="string"/>
   <metadata key="textAlign.editor">com.livecode.pi.enum</metadata>

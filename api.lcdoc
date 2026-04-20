@@ -30,7 +30,7 @@ Name: label
 
 Type: property
 
-Name: labelTextColor
+Name: textColor
 
 Type: property
 
