@@ -3,25 +3,27 @@ import module org.openxtalk.widget.svgraphic
   use com.livecode.library.widgetutils
   use com.livecode.library.iconsvg
   use com.livecode.widget
-  use com.livecode.list
-  use com.livecode.typeconvert
-  use com.livecode.char
-  use com.livecode.array
+  use com.livecode.engine
   use com.livecode.arithmetic
   use com.livecode.binary
+  use com.livecode.list
   use com.livecode.logic
   use com.livecode.string
   use com.livecode.type
+  use com.livecode.typeconvert
+  use com.livecode.char
+  use com.livecode.array
   use com.livecode.mathfoundation
   use com.livecode.byte
   use com.livecode.math
-  use com.livecode.engine
+  handler getextStyle() returns optional any
+  handler setTextStyle(in pTextStyle as optional any) returns optional any
   handler getForegroundColor() returns String
   handler setForegroundColor(in pColor as String) returns nothing
   handler setForegroundPattern(in pPattern as optional Number) returns nothing
-  handler getTextFillGradient() returns optional any
-  handler setTextFillGradient(in pGradientStops as optional String) returns nothing
-  handler setTextGradientAngle(in pAngle as Number) returns nothing
+  handler getFillGradient() returns optional any
+  handler setFillGradient(in pColor as String) returns nothing
+  handler setGradientAngle(in pAngle as Number) returns nothing
   handler getGradientStops() returns String
   handler setGradientStops(in pColor as String) returns nothing
   handler getBackgroundColor() returns String
@@ -33,7 +35,7 @@ import module org.openxtalk.widget.svgraphic
   handler setHiliteColor(in pColor as String) returns nothing
   handler getHiliteColor() returns String
   handler setHilitePattern(in pPattern as optional Number) returns nothing
-  handler setTextAlign(in pColor as String) returns optional any
+  handler setTextAlign(in pAlign as String) returns optional any
   handler getTextAlign() returns String
   handler setBorderWidth(in pAngle as Number) returns nothing
   handler setIsHilited(in pBoolean as Boolean) returns optional any

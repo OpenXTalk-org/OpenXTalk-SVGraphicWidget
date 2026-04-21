@@ -42,6 +42,14 @@ Name: textColor
 
 Type: property
 
+Name: textSize
+
+Type: property
+
+Name: textStyle
+
+Type: property
+
 Name: borderWidth
 
 Type: property
@@ -58,7 +66,11 @@ Name: foregroundPattern
 
 Type: property
 
-Name: textFillGradient
+Name: FillGradient
+
+Type: property
+
+Name: opaque
 
 Type: property
 
@@ -121,14 +133,29 @@ private variable mScaledHeight as Real
 private variable mWidth as Real
 private variable mHeight as Real
 
-private variable mTextSize as Real
-property textSize get mTextSize set setTextSize
+private variable mTextSize as Integer
+property "textSize" get mTextSize set setTextSize
 -- metadata textSize.default is "60.0"
 private handler setTextSize(in pTextSize as Real)
 	put pTextSize into mTextSize
 	redraw all
 end handler
 
+private variable mTextStyle -- as optional any
+property "textStyle" get mTextStyle set setTextStyle
+metadata textStyle.editor is "com.livecode.pi.textstyle"
+metadata textStyle.default is ""
+metadata textStyle.section is "Text"
+public handler getextStyle() returns optional any
+   get property "textStyle" of my script object
+ 	log mTextStyle
+	return mTextStyle
+end handler
+public handler setTextStyle(in pTextStyle )
+	put pTextStyle into mTextStyle
+	log [mTextStyle]
+	redraw all
+end handler
 /**
 Syntax:
 set the foregroundColor of <widget> to <pColor>
@@ -140,23 +167,36 @@ Description:
 Use the <foregroundColor> property to set the color of the SVG path, when the icon
 isn't highlighted.
 */
+
 private variable mForegroundColor as optional Color
 property "foregroundColor" get getForegroundColor set setForegroundColor
 metadata foregroundColor.editor is "com.livecode.pi.color"
--- metadata foregroundColor.default is "127,127,127"
+metadata foregroundColor.default is ""
 metadata foregroundColor.section is "Colors"
 metadata foregroundColor.label is "Fill color"
 metadata foregroundColor.group is "Foreground fill"
+property "textColor"  get getForegroundColor set setForegroundColor
+metadata textColor.editor is "com.livecode.pi.colorwithalpha"
+metadata textColor.user_visible is "false"
+
 -- metadata foregroundColor.order is "1"
 public handler getForegroundColor() returns String
-   return colorToString( mForegroundColor, false)
+	if mForegroundColor is nothing then
+		return ""
+	else
+   	return colorToString( mForegroundColor, false)
+	end if
 end handler
 public handler setForegroundColor(in pColor as String) returns nothing
-   -- log pColor
-   put stringToColor(pColor) into mForegroundColor
-   OnGeometryChanged()
+	if pColor is "" then
+		put nothing into mForegroundColor
+	else
+   	put stringToColor(pColor) into mForegroundColor
+	end if
+   -- OnGeometryChanged()
    redraw all
 end handler
+
 /**
 Syntax:
 set the foregroundPattern of <widget> to <pColor>
@@ -171,7 +211,7 @@ when the shape isn't highlighted.
 private variable mForegroundPattern as optional Number
 property "foregroundPattern" get getForegroundColor set setForegroundPattern
 metadata foregroundPattern.editor is "com.livecode.pi.pattern"
--- metadata foregroundPattern.default is ""
+metadata foregroundPattern.default is ""
 metadata foregroundPattern.section is "Colors"
 metadata foregroundPattern.label is "Fill Pattern"
 metadata foregroundPattern.group is "Foreground fill"
@@ -184,20 +224,25 @@ end handler
 
 ---------------- GRADIENTS ------------------------------------
 
-private variable mGradientRamp as List
-private variable mTextFillGradient as optional String
-property "textFillGradient" get getTextFillGradient set setTextFillGradient
-metadata textFillGradient.editor is "com.livecode.pi.gradientramp"
-metadata textFillGradient.default is "0,0,0,0,0\n1,0,0,0,255"
--- metadata textFillGradient.default is ""
-metadata textFillGradient.section is "Colors"
-metadata textFillGradient.group is "Text fill gradient"
-public handler getTextFillGradient() returns optional any
-   return mTextFillGradient
+private variable mGradientRamp as optional List
+private variable mFillGradient as optional String
+property "FillGradient" get getFillGradient set setFillGradient
+metadata fillGradient.editor is "com.livecode.pi.gradientramp"
+-- metadata fillGradient.default is "0,0,0,0,0\n1,0,0,0,0"
+metadata fillGradient.default is ""
+metadata fillGradient.section is "Colors"
+metadata fillGradient.group is "Fill gradient"
+public handler getFillGradient() returns optional any
+   return mFillGradient
 end handler
-public handler setTextFillGradient(in pGradientStops as optional String ) returns nothing
-   put pGradientStops into mTextFillGradient
-   -- log mTextFillGradient
+public handler setFillGradient(in pGradientStops as String ) returns nothing
+   if pGradientStops is "" then
+		put nothing into mFillGradient
+		put nothing into mGradientRamp
+		return
+	end if
+   put pGradientStops into mFillGradient
+   -- log mFillGradient
    put the empty list into mGradientRamp
    variable tStops as List
    split pGradientStops by newline
@@ -257,17 +302,17 @@ private handler reorderGradientRamp() returns nothing
    end if
 end handler
 
-private variable mTextGradientAngle as Real -- as Number
-property "textGradientAngle" get mTextGradientAngle set setTextGradientAngle
-metadata textGradientAngle.editor is "com.livecode.pi.number"
-metadata textGradientAngle.default is "0"
-metadata textGradientAngle.section is "Colors"
-metadata textGradientAngle.label is "Text gradient angle"
-metadata textGradientAngle.step is "0.5"
-metadata textGradientAngle.min is "-359.9"
-metadata textGradientAngle.max is "359.9"
-public handler setTextGradientAngle(in pAngle as Number) returns nothing
-	put pAngle into mTextGradientAngle
+private variable mGradientAngle as Real -- as Number
+property "gradientAngle" get mGradientAngle set setGradientAngle
+metadata gradientAngle.editor is "com.livecode.pi.number"
+metadata gradientAngle.default is "0"
+metadata gradientAngle.section is "Colors"
+metadata gradientAngle.label is "Text gradient angle"
+metadata gradientAngle.step is "0.5"
+metadata gradientAngle.min is "-359.9"
+metadata gradientAngle.max is "359.9"
+public handler setGradientAngle(in pAngle as Number) returns nothing
+	put pAngle into mGradientAngle
 	-- CalculateScaledSizes()
 	redraw all
 end handler
@@ -346,12 +391,15 @@ metadata backgroundColor.group is "Background fill"
 -- metadata backgroundColor.order is "3"
 -- metadata foregroundColor.order is "1"
 public handler getBackgroundColor() returns String
-   return colorToString( mBackgroundColor, true)
+   return colorToString( mBackgroundColor, false)
 end handler
 public handler setBackgroundColor(in pColor as String) returns nothing
-   -- log pColor
-   put stringToColor(pColor) into mBackgroundColor
-   OnGeometryChanged()
+	if pColor is "" then
+		put nothing into mBackgroundColor
+	else
+   	put stringToColor(pColor) into mBackgroundColor
+	end if
+   -- OnGeometryChanged()
    redraw all
 end handler
 
@@ -499,21 +547,6 @@ public handler setHilitePattern(in pHilitePattern as optional Number) returns no
    redraw all
 end handler
 
-private variable mTextColor as Color
-property "textColor"          get getTextColor        set setTextColor
-metadata textColor.label is "Text Color"
-metadata textColor.section is "Colors"
-metadata textColor.editor is "com.livecode.pi.color"
-metadata textColor.default is "127,255,0"
-metadata textColor.user_visible is "true"
-private handler getTextColor() returns String
-	return colorToString(mTextColor,false)
-end handler
-private handler setTextColor(in pColor as String)
-	put stringToColor(pColor) into mTextColor
-	redraw all
-end handler
-
 private variable mLabelText -- as String
 property "label" get getLabelText set setLabelText
 metadata label.label is "Label Text"
@@ -542,6 +575,8 @@ public handler setTextAlign( in pAlign as String)
       throw "textAlign must be one of Center,CenterLeft,CenterRight,CenterTop,CenterBottom,Left,BottomLeft,Right,BottomRight, or empty"
       -- put "Center" into mTextAlign
    end if
+	-- OnGeometryChanged()
+	redraw all
 end handler
 public handler getTextAlign() returns String
     return mTextAlign
@@ -557,21 +592,21 @@ Description:
 Use the <borderWidth> property to set the thickness of the SVG path outline stroke
 
 */
-private variable mBorderWidth as Number
+private variable mBorderWidth as optional Real
 property "borderWidth" get mBorderWidth  set setBorderWidth
 metadata borderWidth.editor is "com.livecode.pi.number"
 metadata borderWidth.label is "Border width"
-metadata borderWidth.step is "0.5"
-metadata borderWidth.default is "1"
-metadata borderWidth.min is "0.1"
+metadata borderWidth.step is "0.25"
+metadata borderWidth.default is "2"
+metadata borderWidth.min is "0"
 metadata borderWidth.max is "144"
 --- lineSize is synonym for borderWidth property, scripters can use either syntax.
 --- lineSize synonym allows for property compastibility with 'Graphic classic control' objects.
 property "lineSize" get mBorderWidth  set setBorderWidth
 metadata lineSize.user_visible is "false"
-public handler setBorderWidth(in pBorderWidth as Number) returns nothing
-   put pBorderWidth into mBorderWidth
-   OnGeometryChanged()
+public handler setBorderWidth(in pBorderWidth as Real) returns nothing
+	put pBorderWidth into mBorderWidth
+	OnGeometryChanged()
    redraw all
 end handler
 
@@ -675,13 +710,10 @@ If the <opaque> property is `true`, the background is filled with the <backColor
 References: backColor (property)
 **/
 private variable mOpaque as Boolean
-property "opaque" get mOpaque set setOpaque
+property opaque get mOpaque set setOpaque
 metadata opaque.default is "true"
 metadata opaque.label is "Opaque background"
 private handler setOpaque(in pOpaque as Boolean) returns nothing
-	if pOpaque is mOpaque then
-		return
-	end if
 	put pOpaque into mOpaque
 	redraw all
 end handler
@@ -802,16 +834,19 @@ public handler OnCreate()
     put true into mOpaque
    --  put "" into mLabelText
 	put 0 into mAngle
-	put 1 into mBorderWidth
+	put 2 into mBorderWidth
    put false into mHilited
    put true into mMaintainAspectRatio
    put false into mFlipVertically
-   put the color of my highlight paint into mHiliteColor
+	put the color of my focus paint into mHiliteColor
+   -- put the color of my highlight paint into mHiliteColor
 	put the color of my border paint into mBorderColor
-   put the color of my focus paint into mTextColor
-   -- put the color of my top paint into mTextColor
+   -- put the color of my foreground paint into mForegroundColor
+	put nothing into mForegroundColor
 	-- put the color of my background paint into mBackgroundColor
-   setTextFillGradient("0,0,0,0,0\n1,0,0,0,255")
+	put nothing into mBackgroundColor
+   -- put the color of my top paint into mTextColor
+   -- setFillGradient("0,0,0,0,0\n1,0,0,0,0")
 	put "non-zero" into mFillRule
 	setPathPreset("comment")
    -- get property "name" of my script object
@@ -842,10 +877,15 @@ public handler OnSave(out rProperties as Array)
    put mToolTip into rProperties["tooltip"]
    if mForegroundColor is not nothing then
 	     put colorToString(mForegroundColor,false) into rProperties["foregroundColor"]
+	  else
+		  put "" into rProperties["foregroundColor"]
   end if
   if mForegroundPattern is not nothing then
      put mForegroundPattern into rProperties["foregroundPattern"]
   end if
+  -- if mTextColor is not nothing then -- textColor is a 'synonym' for as foregroundColor
+  --    put colorToString(mTextColor,false) into rProperties["textColor"]
+  -- end if
    if mBackgroundColor is not nothing then
       put colorToString(mBackgroundColor,false) into rProperties["backgroundColor"]
    end if
@@ -860,11 +900,8 @@ public handler OnSave(out rProperties as Array)
    if mHilitePattern is not nothing then
       put mHilitePattern into rProperties["hilitePattern"]
    end if
-   if mTextColor is not nothing then
-       put colorToString(mTextColor,false) into rProperties["textColor"]
-   end if
-   if mTextFillGradient is not nothing then
-      put mTextFillGradient into rProperties["textFillGradient"]
+   if mFillGradient is not nothing then
+      put mFillGradient into rProperties["fillGradient"]
    end if
 end handler
 
@@ -903,14 +940,25 @@ public handler OnLoad(in pProperties as Array)
 	if "fillRule" is among the keys of pProperties then
 		put pProperties["fillRule"] into mFillRule
 	end if
+	-- if "textColor" is among the keys of pProperties then -- textColor is a engine synonym for foregroundColor
+	--	put stringToColor(pProperties["textColor"]) into mTextColor
+	-- end if
    if "foregroundColor" is among the keys of pProperties then
+		if pProperties["foregroundColor"] is "" then
+			put nothing into mForegroundColor
+		else
 	     put stringToColor(pProperties["foregroundColor"]) into mForegroundColor
+  	   end if
   end if
   if "foregroundPattern" is among the keys of pProperties then
      put pProperties["foregroundPattern"] into mForegroundPattern
    end if
    if "backgroundColor" is among the keys of pProperties then
-      put stringToColor(pProperties["backgroundColor"]) into mBackgroundColor
+		if pProperties["backgroundColor"] is "" then
+			put nothing into mForegroundColor
+		else
+			put stringToColor(pProperties["backgroundColor"]) into mBackgroundColor
+		end if
     end if
     if "backgroundPattern" is among the keys of pProperties then
       put pProperties["backgroundPattern"] into mBackgroundPattern
@@ -927,12 +975,9 @@ public handler OnLoad(in pProperties as Array)
    if "hilitePattern" is among the keys of pProperties then
       put pProperties["hilitePattern"] into mHilitePattern
    end if
-   if "textColor" is among the keys of pProperties then
-      put stringToColor(pProperties["textColor"]) into mTextColor
-   end if
-   if "textFillGradient" is among the keys of pProperties then
-      put pProperties["textFillGradient"] into mTextFillGradient
-      setTextFillGradient(mTextFillGradient)
+   if "fillGradient" is among the keys of pProperties then
+      put pProperties["fillGradient"] into mFillGradient
+      setFillGradient(mFillGradient)
    end if
 	CalculateScaledSizes()
    redraw all
@@ -1002,7 +1047,6 @@ public handler setPath(in pPath as String) returns nothing
 	redraw all
 end handler
 
-
 variable mPoints as String
 property "points" get mPoints set setPoints
 metadata points.editor is "com.livecode.pi.text"
@@ -1054,38 +1098,32 @@ end handler
 public handler OnPaint()
    variable tPath as Path
    variable tGradient
-   -- /*
-   if mGradientRamp is not nothing then
-   -- if mGradientRamp is not empty then
-         variable tGradient as Gradient
-         put linear gradient with ramp mGradientRamp into tGradient
-         -- put rectangle path of my bounds into tPath
-         set the from of tGradient to point [the right of my bounds / 2,0]
-         set the to of tGradient to point [the right of my bounds / 2, the bottom of my bounds]
-         -- set the via of tGradient to point [the left of my bounds / 2, the bottom of my bounds]
-         add rectangle path of my bounds to this canvas
-         set the paint of this canvas to tGradient
-         fill this canvas
-   end if
-  -- */
-	put path mPath into tPath
+	set the fill rule of this canvas to mFillRule
 
+	if mOpaque then
+		if mBackgroundColor is not nothing then
+			set the paint of this canvas to solid paint with mBackgroundColor
+		else
+		  put rectangle path of my bounds into tPath
+	     set the paint of this canvas to my background paint
+		  fill tPath on this canvas
+		end if
+	end if
+
+	put path mPath into tPath
 	variable tBounds
 	if mFlipVertically then
 		scale tPath by [1,-1]
 		translate tPath by [0, the height of the bounding box of tPath]
 	end if
-
 	if mAngle > -359.9 and mAngle < 360 then
 		rotate tPath by mAngle
 	end if
-
-	// scale to fit within widget and maintain aspect ratio
+	-- scale to fit within widget and maintain aspect ratio
 	if mMaintainAspectRatio then
 		variable tNewPathRect as Rectangle
 		put rectangle [ 0 + (mBorderWidth/2), 0 + (mBorderWidth/2), the width of my bounds - (mBorderWidth/2) , the height of my bounds - (mBorderWidth/2) ] into tNewPathRect
 		constrainPathToRect( tNewPathRect, tPath)
-		-- 	constrainPathToRect(my bounds, tPath)
 	else
 		scale tPath by [ (my width - mBorderWidth) / (the width of the bounding box of tPath ), \
 				(my height - mBorderWidth) / (the height of the bounding box of tPath ) ]
@@ -1093,26 +1131,35 @@ public handler OnPaint()
 		translate tPath by [(the left of tBounds * -1) + (mBorderWidth/2), (the top of tBounds * -1) + (mBorderWidth/2)]
 	end if
 
-	if mOpaque then
+  if mBackgroundColor is not nothing then
+			set the paint of this canvas to my background paint
+			fill tPath on this canvas
+	end if
+	-- if mOpaque then
 		if mHilited is false then
-			set the paint of this canvas to my foreground paint
+			if mGradientRamp is not nothing then
+			-- if mGradientRamp is not empty then
+					variable tGradient as Gradient
+					put linear gradient with ramp mGradientRamp into tGradient
+					set the from of tGradient to point [the right of my bounds / 2,0]
+					set the to of tGradient to point [the right of my bounds / 2, the bottom of my bounds]
+					rotate tGradient by mGradientAngle
+					set the paint of this canvas to tGradient
+					fill tPath on this canvas
+			 else
+					set the paint of this canvas to my background paint
+					fill tPath on this canvas
+			end if
 		else
 			set the paint of this canvas to my highlight paint
 		end if
-		set the fill rule of this canvas to mFillRule
-		fill tPath on this canvas
-	end if
-	set the stroke width of this canvas to mBorderWidth
-	set the paint of this canvas to my border paint
-	stroke tPath on this canvas
-
+	-- end if
+	if mBorderWidth > 0 then
+		set the stroke width of this canvas to mBorderWidth
+		set the paint of this canvas to my border paint
+		stroke tPath on this canvas
+   end if
    if mLabelText is not "" then
-      set the font of this canvas to my font
-      if mTextColor is not empty then
-         set the paint of this canvas to solid paint with mTextColor
-      else
-         set the paint of this canvas to my top paint -- my border paint? my topColor paint? What are the others?
-      end if
       variable tTextBounds as Rectangle
       variable tTextVOffset as Real
       variable tTextHOffset as Real
@@ -1123,18 +1170,26 @@ public handler OnPaint()
 		put rectangle path of tTextBounds into tPath
 		put ( the bottom of my bounds - the bottom of tTextBounds ) into tTextVOffset
 		put ( the right of my bounds - the right of tTextBounds ) into tTextHOffset
-		translate tPath by [ tTextHOffset / 2, tTextVOffset / 2  + ( the size of my font / 2 ) ]
-		put the bounding box of tPath into tTextBounds
 
+		set the font of this canvas to my font
+      if mForegroundColor is not nothing then
+         set the paint of this canvas to solid paint with mForegroundColor
+      else
+         set the paint of this canvas to my foreground paint -- my border paint? my top paint? What are the others?
+      end if
       if mTextAlign is "Center" then
          fill text mLabelText at center of my bounds on this canvas
+			---------------------- THIS WAS A PAIN TO FIGURE OUT SO I'M KEEPING IT HERE BUT COMMENTED OUT
 			/*
+			translate tPath by [ tTextHOffset / 2, tTextVOffset / 2  + ( the size of my font / 2 ) ]
+			--- REMEASURE TEXT AFTER THE MOVE:
+			put the bounding box of tPath into tTextBounds
          measure mLabelText on this canvas
          put the result into tTextBounds
          put rectangle path of tTextBounds into tPath
-
          put ( the bottom of my bounds - the bottom of tTextBounds ) into tTextVOffset
          put ( the right of my bounds - the right of tTextBounds ) into tTextHOffset
+			--- END OF REMEASURING TEXT ----
          if mGradientRamp is not empty then
              -- popup:gradientType,gradientRamp,gradientQuality,gradientRepeat,gradientMirror,gradientWrap
             put linear gradient with ramp mGradientRamp into tGradient
@@ -1145,8 +1200,8 @@ public handler OnPaint()
             set the to of tGradient to point [ the top of tTextBounds + the size of my font , the width of tTextBounds /2 ]
             -- set the via of tGradient to point [ the height of tTextBounds / 2 , the width of tTextBounds / 2 ]
             -- translate tGradient by [ tTextHOffset, tTextVOffset ] --  + ( the size of my font / 2 )]
-            rotate tGradient by mTextGradientAngle
-            rotate tPath by mTextGradientAngle
+            rotate tGradient by mGradientAngle
+            rotate tPath by mGradientAngle
             stroke tPath on this canvas
             set the paint of this canvas to tGradient
             fill text mLabelText at center of my bounds on this canvas
@@ -1154,14 +1209,21 @@ public handler OnPaint()
 		 */
       else if mTextAlign is "Left" or mTextAlign is "" then
          fill text mLabelText at top left of my bounds on this canvas
+		else if mTextAlign is "CenterLeft" then
+			-- fill text mLabelText at center left of my bounds on this canvas
+			fill text mLabelText at point [ the left of my bounds, tTextVOffset /2 + (the size of my font / 2)] on this canvas
       else if mTextAlign is "Right" then
 			fill text mLabelText at top right of my bounds on this canvas
-      -- fill text mLabelText at point [the right of my bounds - the right of tTextBounds,the size of my font] on this canvas
+         -- fill text mLabelText at point [the right of my bounds - the right of tTextBounds,the size of my font] on this canvas
+		else if mTextAlign is "CenterRight" then
+		  -- 	fill text mLabelText at right center of my bounds on this canvas
+		  fill text mLabelText at point [(the right of my bounds - the right of tTextBounds) , tTextVOffset /2 + (the size of my font / 2)] on this canvas
       else if mTextAlign is "CenterBottom" then
-		   -- fill text mLabelText at center bottom of my bounds on this canvas
-         fill text mLabelText at point [ tTextHOffset / 2 , the bottom of my bounds - (the size of my font / 2) ] on this canvas
+		   fill text mLabelText at bottom of my bounds on this canvas
+         -- fill text mLabelText at point [ (tTextHOffset/2), the bottom of my bounds - (the size of my font / 2) ] on this canvas
 		else if mTextAlign is "CenterTop" then
-			fill text mLabelText at point [ tTextHOffset / 2, 0 + the size of my font ] on this canvas
+			fill text mLabelText at top of my bounds on this canvas
+			-- fill text mLabelText at point [ tTextHOffset / 2, 0 + the size of my font ] on this canvas
 		else if mTextAlign is "BottomLeft" then
 			fill text mLabelText at bottom left of my bounds on this canvas
 		else if mTextAlign is "BottomRight" then

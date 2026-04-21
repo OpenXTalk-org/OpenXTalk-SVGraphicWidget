@@ -34,6 +34,14 @@ Name: textColor
 
 Type: property
 
+Name: textSize
+
+Type: property
+
+Name: textStyle
+
+Type: property
+
 Name: borderWidth
 
 Type: property
@@ -50,7 +58,11 @@ Name: foregroundPattern
 
 Type: property
 
-Name: textFillGradient
+Name: FillGradient
+
+Type: property
+
+Name: opaque
 
 Type: property
 
