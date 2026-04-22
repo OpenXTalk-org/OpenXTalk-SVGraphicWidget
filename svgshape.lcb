@@ -19,87 +19,90 @@ This widget displays an SVG path as a shape.  It has a default state and a
 "highlighted" state.
 
 Name: mouseMove
-
 Type: message
 
 Name: mouseDown
-
 Type: message
 
 Name: mouseUp
-
 Type: message
 
 Name: mouseRelease
-
 Type: message
 
 Name: label
-
 Type: property
 
 Name: textColor
-
 Type: property
 
 Name: textSize
-
 Type: property
 
 Name: textStyle
-
 Type: property
 
 Name: borderWidth
-
 Type: property
 
 Name: lineSize
-
-Type: property
-
-Name: foregroundColor
-
-Type: property
-
-Name: foregroundPattern
-
-Type: property
-
-Name: FillGradient
-
 Type: property
 
 Name: opaque
+Type: property
 
+Name: FillGradient
+Type: property
+
+Name: foregroundColor
+Type: property
+
+Name: foregroundPattern
 Type: property
 
 Name: backgroundColor
-
 Type: property
 
 Name: backgroundPattern
-
 Type: property
 
 Name: hiliteColor
-
 Type: property
 
 Name: hilitePattern
-
 Type: property
 
 Name: borderColor
-
 Type: property
 
 Name: borderPattern
+Type: property
 
+Name: topColor
+Type: property
+
+Name: topPattern
+Type: property
+
+Name: bottomColor
+Type: property
+
+Name: bottomPattern
+Type: property
+
+Name: shadowColor
+Type: property
+
+Name: shadowPattern
+Type: property
+
+Name: focusColor
+Type: property
+
+Name: focusPattern
 Type: property
 
 Name: strokeGradient
-
 Type: property
 
 **/
@@ -132,6 +135,18 @@ private variable mScaledWidth as Real
 private variable mScaledHeight as Real
 private variable mWidth as Real
 private variable mHeight as Real
+
+-- 'the colors' are the 8 'built-in' colors that all objects can have
+/*
+	--Line 1: the foregroundColor
+	--Line 2: the backgroundColor
+	--Line 3: the hiliteColor
+	--Line 4: the borderColor
+	--Line 5: the topColor
+	--Line 6: the bottomColor
+	--Line 7: the shadowColor
+	--Line 8: the focusColor
+*/
 
 private variable mTextSize as Integer
 property "textSize" get mTextSize set setTextSize
@@ -546,6 +561,41 @@ public handler setHilitePattern(in pHilitePattern as optional Number) returns no
    OnGeometryChanged()
    redraw all
 end handler
+
+------------------
+/**
+Syntax:
+set the bottomColor of <widget> to <pColor>
+get the bottomColor of <widget>
+
+Summary: Determines the color of the stroke of the shape.
+
+Description:
+Use the <bottomColor> property to set the color of the SVG path outline, when the icon
+isn't highlighted.
+*/
+private variable mBottomColor as Color
+property "bottomColor" get getBottomColor set setBottomColor
+metadata bottomColor.editor is "com.livecode.pi.colorwithalpha"
+metadata bottomColor.default is "0,0,0,0"
+metadata bottomColor.section is "Colors"
+/*
+metadata bottomColor.group is "borderProps"
+metadata bottomColor.order is "5"
+metadata bottomColor.label   is "Stroke Color"
+*/
+public handler setBottomColor(in pColor as String) returns nothing
+   -- log pColor
+   put stringToColor(pColor) into mBottomColor
+   -- log mStrokesColor
+   OnGeometryChanged()
+   redraw all
+end handler
+public handler getBottomColor() returns String
+   return colorToString(mBottomColor, true)
+end handler
+
+-------------------
 
 private variable mLabelText -- as String
 property "label" get getLabelText set setLabelText
@@ -1165,13 +1215,12 @@ public handler OnPaint()
       variable tTextHOffset as Real
       variable tTextVscale as Real
       variable tTextHscale as Real
+		set the font of this canvas to my font
 		measure mLabelText on this canvas
 		put the result into tTextBounds
 		put rectangle path of tTextBounds into tPath
 		put ( the bottom of my bounds - the bottom of tTextBounds ) into tTextVOffset
 		put ( the right of my bounds - the right of tTextBounds ) into tTextHOffset
-
-		set the font of this canvas to my font
       if mForegroundColor is not nothing then
          set the paint of this canvas to solid paint with mForegroundColor
       else
@@ -1216,8 +1265,8 @@ public handler OnPaint()
 			fill text mLabelText at top right of my bounds on this canvas
          -- fill text mLabelText at point [the right of my bounds - the right of tTextBounds,the size of my font] on this canvas
 		else if mTextAlign is "CenterRight" then
-		  -- 	fill text mLabelText at right center of my bounds on this canvas
-		  fill text mLabelText at point [(the right of my bounds - the right of tTextBounds) , tTextVOffset /2 + (the size of my font / 2)] on this canvas
+		  -- 	fill text mLabelText at center of my bounds on this canvas
+		  fill text mLabelText at point [ tTextHOffset , tTextVOffset /2 + (the size of my font / 2)] on this canvas
       else if mTextAlign is "CenterBottom" then
 		   fill text mLabelText at bottom of my bounds on this canvas
          -- fill text mLabelText at point [ (tTextHOffset/2), the bottom of my bounds - (the size of my font / 2) ] on this canvas
