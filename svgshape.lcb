@@ -193,7 +193,6 @@ metadata foregroundColor.group is "Foreground fill"
 property "textColor"  get getForegroundColor set setForegroundColor
 metadata textColor.editor is "com.livecode.pi.colorwithalpha"
 metadata textColor.user_visible is "false"
-
 -- metadata foregroundColor.order is "1"
 public handler getForegroundColor() returns String
 	if mForegroundColor is nothing then
@@ -208,7 +207,6 @@ public handler setForegroundColor(in pColor as String) returns nothing
 	else
    	put stringToColor(pColor) into mForegroundColor
 	end if
-   -- OnGeometryChanged()
    redraw all
 end handler
 
@@ -456,10 +454,10 @@ Description:
 Use the <borderColor> property to set the color of the SVG path outline, when the icon
 isn't highlighted.
 */
-private variable mBorderColor as Color
+private variable mBorderColor as optional Color
 property "borderColor" get getBorderColor set setBorderColor
 metadata borderColor.editor is "com.livecode.pi.color"
-metadata borderColor.default is "0,0,0"
+metadata borderColor.default is ""
 metadata borderColor.section is "Colors"
 /*
 metadata borderColor.group is "borderProps"
@@ -467,14 +465,19 @@ metadata borderColor.order is "5"
 metadata borderColor.label   is "Stroke Color"
 */
 public handler setBorderColor(in pColor as String) returns nothing
-   -- log pColor
-   put stringToColor(pColor) into mBorderColor
-   -- log mStrokesColor
-   OnGeometryChanged()
+	if pColor is "" then
+		put nothing into mBorderColor
+	else
+   	put stringToColor(pColor) into mBorderColor
+	end if
    redraw all
 end handler
 public handler getBorderColor() returns String
-   return colorToString(mBorderColor, true)
+	if mBorderColor is nothing then
+		return ""
+	else
+		return colorToString( mBorderColor, false)
+	end if
 end handler
 
 /**
@@ -500,7 +503,6 @@ metadata borderPattern.label is "Stroke Pattern"
 public handler setBorderPattern(in pPattern as optional Number) returns nothing
    put pPattern into mBorderPattern
 	log mBorderPattern
-   OnGeometryChanged()
    redraw all
 end handler
 
@@ -521,12 +523,19 @@ metadata hiliteColor.editor is "com.livecode.pi.color"
 metadata hiliteColor.default is ""
 metadata hiliteColor.section is "Colors"
 public handler setHiliteColor(in pColor as String) returns nothing
-   put stringToColor(pColor) into mHiliteColor
-   OnGeometryChanged()
-   redraw all
+	if pColor is "" then
+		put nothing into mHiliteColor
+	else
+		put stringToColor(pColor) into mHiliteColor
+	end if
+	redraw all
 end handler
 public handler getHiliteColor() returns String
-   return colorToString(mHiliteColor,false)
+	if mHiliteColor is nothing then
+		return ""
+	else
+		return colorToString( mHiliteColor, false)
+	end if
 end handler
 
 /*
@@ -888,8 +897,9 @@ public handler OnCreate()
    put false into mHilited
    put true into mMaintainAspectRatio
    put false into mFlipVertically
-	put the color of my focus paint into mHiliteColor
-   -- put the color of my highlight paint into mHiliteColor
+	-- put the color of my focus paint into mHiliteColor
+	-- put the color of my highlight paint into mHiliteColor
+	put nothing into mHiliteColor
 	put the color of my border paint into mBorderColor
    -- put the color of my foreground paint into mForegroundColor
 	put nothing into mForegroundColor
@@ -1108,20 +1118,25 @@ public handler setPoints(in pPoints as String) returns nothing
 	variable tContinuousLineList as List
 	variable tContinuousLinePoints as List
 	variable tLinePoint as String
+	variable tSingleCoords as List
 	variable tLineSVGPath as String
 	variable tLineSVGLines as String
 	put pPoints into mPoints
    if pPoints is not "" then
       setPathPreset("")
-
+      -- put the empty path into mPath
       split mPoints by "\n\n" into tOriginalPointsList
       repeat for each element tContinuousLine in tOriginalPointsList
          split tContinuousLine by "\n" into tContinuousLinePoints
          -- log  tContinuousLinePoints
          put "M"  into tLineSVGPath
       	repeat for each element tLinePoint in tContinuousLinePoints
-             -- should go a strep further here and check that items of point are actually integers
-      	       put tLinePoint & " L" after tLineSVGPath
+          -- should go a strep further here and check that items of point are actually integers
+				 split tLinePoint by "," into tSingleCoords
+				 if the number of elements in tSingleCoords > 2 or the number of elements in tSingleCoords < 2 then
+					 throw "Points must be pairs of x,y coordinates"
+				 end if
+				 put tLinePoint & " L" after tLineSVGPath
       	end repeat
       	delete char -2 to -1 of tLineSVGPath
       	put "Z " after tLineSVGPath
@@ -1160,7 +1175,22 @@ public handler OnPaint()
 		end if
 	end if
 
-	put path mPath into tPath
+	variable mPolyStyle as String
+	-- put "rectangle" into mPolyStyle
+	-- put "roundrect" into mPolyStyle
+	-- put "oval" into mPolyStyle
+	-- put "regular" into mPolyStyle
+	-- put "line" into mPolyStyle
+	-- put "curve" into mPolyStyle
+	-- put "polygon" into mPolyStyle
+	-- Graphic styles are: ,roundrect,,,,line,,
+	if mPolyStyle is "roundRect" then
+		put rounded rectangle path of my bounds with radius 5 into tPath
+	else
+		put path mPath into tPath
+	end if
+	log [tPath]
+
 	variable tBounds
 	if mFlipVertically then
 		scale tPath by [1,-1]
@@ -1186,29 +1216,38 @@ public handler OnPaint()
 			fill tPath on this canvas
 	end if
 	-- if mOpaque then
-		if mHilited is false then
-			if mGradientRamp is not nothing then
-			-- if mGradientRamp is not empty then
-					variable tGradient as Gradient
-					put linear gradient with ramp mGradientRamp into tGradient
-					set the from of tGradient to point [the right of my bounds / 2,0]
-					set the to of tGradient to point [the right of my bounds / 2, the bottom of my bounds]
-					rotate tGradient by mGradientAngle
-					set the paint of this canvas to tGradient
-					fill tPath on this canvas
-			 else
-					set the paint of this canvas to my background paint
-					fill tPath on this canvas
-			end if
-		else
-			set the paint of this canvas to my highlight paint
+	if mHilited is false then
+		if mGradientRamp is not nothing then
+		-- if mGradientRamp is not empty then
+				variable tGradient as Gradient
+				put linear gradient with ramp mGradientRamp into tGradient
+				set the from of tGradient to point [the right of my bounds / 2,0]
+				set the to of tGradient to point [the right of my bounds / 2, the bottom of my bounds]
+				rotate tGradient by mGradientAngle
+				set the paint of this canvas to tGradient
+				fill tPath on this canvas
+		 else
+				set the paint of this canvas to my background paint
+				fill tPath on this canvas
 		end if
+	else
+		if mHiliteColor is nothing then
+		    set the paint of this canvas to my highlight paint
+		 else
+			 set the paint of this canvas to solid paint with mHiliteColor
+		 end if
+		 fill tPath on this canvas
+	end if
 	-- end if
+
+	--------- STROKE PATH
 	if mBorderWidth > 0 then
 		set the stroke width of this canvas to mBorderWidth
 		set the paint of this canvas to my border paint
 		stroke tPath on this canvas
    end if
+
+	---------- LABEL TEXT ------------
    if mLabelText is not "" then
       variable tTextBounds as Rectangle
       variable tTextVOffset as Real
