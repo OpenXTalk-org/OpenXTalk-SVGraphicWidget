@@ -35,10 +35,13 @@ import module org.openxtalk.widget.svgraphic
   handler setHiliteColor(in pColor as String) returns nothing
   handler getHiliteColor() returns String
   handler setHilitePattern(in pPattern as optional Number) returns nothing
+  variable mBottomColor as optional Color
   handler setBottomColor(in pColor as String) returns nothing
   handler getBottomColor() returns String
+  handler setBottomAlpha(in pAngle as Number) returns nothing
+  handler getBottomAlpha() returns String
   handler setTextAlign(in pAlign as String) returns optional any
-  handler getTextAlign() returns String
+  handler setPolyStyle(in pColor as String) returns nothing
   handler setBorderWidth(in pAngle as Number) returns nothing
   handler setIsHilited(in pBoolean as Boolean) returns optional any
   handler setMaintainAspectRatio(in pBoolean as Boolean) returns optional any

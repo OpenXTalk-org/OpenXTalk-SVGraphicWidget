@@ -51,7 +51,8 @@
   <handler name="setForegroundPattern" parameters="in optional number" return="nothing"/>
   <property name="FillGradient" get="optional any" set="string"/>
   <metadata key="fillGradient.editor">com.livecode.pi.gradientramp</metadata>
-  <metadata key="fillGradient.default"></metadata>
+  <metadata key="fillGradient.default">0,0,0,0,0
+1,0,0,0,0</metadata>
   <metadata key="fillGradient.section">Colors</metadata>
   <metadata key="fillGradient.group">Fill gradient</metadata>
   <handler name="getFillGradient" parameters="" return="optional any"/>
@@ -87,7 +88,7 @@
   <handler name="setBackgroundPattern" parameters="in optional number" return="nothing"/>
   <property name="borderColor" get="string" set="string"/>
   <metadata key="borderColor.editor">com.livecode.pi.color</metadata>
-  <metadata key="borderColor.default">0,0,0</metadata>
+  <metadata key="borderColor.default"></metadata>
   <metadata key="borderColor.section">Colors</metadata>
   <handler name="setBorderColor" parameters="in string" return="nothing"/>
   <handler name="getBorderColor" parameters="" return="string"/>
@@ -109,6 +110,22 @@
   <metadata key="hilitePattern.default"></metadata>
   <metadata key="hilitePattern.section">Colors</metadata>
   <handler name="setHilitePattern" parameters="in optional number" return="nothing"/>
+  <property name="bottomColor" get="string" set="string"/>
+  <metadata key="bottomColor.editor">com.livecode.pi.color</metadata>
+  <metadata key="bottomColor.default"></metadata>
+  <metadata key="bottomColor.section">Colors</metadata>
+  <handler name="setBottomColor" parameters="in string" return="nothing"/>
+  <handler name="getBottomColor" parameters="" return="string"/>
+  <property name="bottomAlpha" get="string" set="number"/>
+  <metadata key="bottomAlpha.editor">com.livecode.pi.number</metadata>
+  <metadata key="bottomAlpha.label">Bottom alpha transparency</metadata>
+  <metadata key="bottomAlpha.step">0.05</metadata>
+  <metadata key="bottomAlpha.default">0.5</metadata>
+  <metadata key="bottomAlpha.min">0</metadata>
+  <metadata key="bottomAlpha.max">1.0</metadata>
+  <metadata key="bottomAlpha.section">Colors</metadata>
+  <handler name="setBottomAlpha" parameters="in number" return="nothing"/>
+  <handler name="getBottomAlpha" parameters="" return="string"/>
   <property name="label" get="string" set="optional any"/>
   <metadata key="label.label">Label Text</metadata>
   <metadata key="label.editor">com.livecode.pi.text</metadata>
@@ -119,7 +136,13 @@
   <metadata key="textAlign.default">Center</metadata>
   <metadata key="textAlign.label">Label text alignment</metadata>
   <handler name="setTextAlign" parameters="in string" return="any"/>
-  <handler name="getTextAlign" parameters="" return="string"/>
+  <property name="style" get="string" set="string"/>
+  <metadata key="style.editor">com.livecode.pi.enum</metadata>
+  <metadata key="style.options">,rectangle,roundRect,oval,regular,line,curve,polygon</metadata>
+  <metadata key="style.default"></metadata>
+  <metadata key="style.section">basic</metadata>
+  <metadata key="style.label">graphic style</metadata>
+  <handler name="setPolyStyle" parameters="in string" return="nothing"/>
   <property name="borderWidth" get="optional real" set="real"/>
   <metadata key="borderWidth.editor">com.livecode.pi.number</metadata>
   <metadata key="borderWidth.label">Border width</metadata>
